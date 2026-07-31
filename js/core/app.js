@@ -37,7 +37,7 @@ function abrirCapitulos(i) {
         b.onclick = () => lerCapitulo(i, idx);
         g.appendChild(b);
     });
-    mostrarTela('capitulos');
+    mostrarTela('capitulos'); document.getElementById('leitor-panel').classList.remove('hidden');
 }
 
 function lerCapitulo(l, c) {
@@ -62,8 +62,9 @@ function navegar(dir) {
 }
 
 function mostrarTela(t) {
-    ['livros','capitulos','leitura'].forEach(x => document.getElementById('tela-'+x).classList.add('view-hidden'));
+    ['livros','capitulos','leitura','atualizacoes'].forEach(x => document.getElementById('tela-'+x).classList.add('view-hidden'));
     document.getElementById('tela-'+t).classList.remove('view-hidden');
 }
 
 init();
+

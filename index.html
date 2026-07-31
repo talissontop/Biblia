@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bíblia de Estudo 3D - Originais</title>
-    <!-- CONFIGURAÇÕES PWA -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f1117">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3389/3389081.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1453/1453982.png">
     
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <style>
@@ -28,6 +27,8 @@
         .leitor-panel { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 900px; height: calc(100vh - 120px); background: rgba(15, 17, 23, 0.9); backdrop-filter: blur(10px); border: 1px solid var(--panel-border); border-radius: 12px; z-index: 15; padding: 30px; overflow-y: auto; transition: opacity 0.3s ease; }
         .leitor-panel.hidden { opacity: 0; pointer-events: none; }
         .view-hidden { display: none !important; }
+        
+        /* Grids e Botões */
         .grid-livros { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 30px; }
         .btn-livro { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 12px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 14px; }
         .btn-livro:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
@@ -35,34 +36,52 @@
         .btn-capitulo { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 15px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
         .btn-capitulo:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
         .nav-leitura { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--panel-border); }
-        .nav-leitura-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+        .nav-leitura-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-bottom: 1px solid var(--panel-border); }
         .btn-nav { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-nav:hover { background: rgba(212, 175, 55, 0.15); }
         .versiculo-box { margin-bottom: 20px; line-height: 1.8; }
         .versiculo-texto { font-size: 18px; color: #fff; }
         .versiculo-texto .num { color: var(--accent-gold); font-weight: bold; margin-right: 8px; font-size: 14px; }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 4px; }
+        
+        /* Modais */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 10, 0.85); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 1; visibility: visible; transition: all 0.3s; }
+        .modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .modal-card { background: #141822; border: 1px solid var(--accent-gold); border-radius: 12px; max-width: 400px; width: 100%; padding: 30px; text-align: center; }
+        .modal-header h2 { color: var(--accent-gold); font-size: 22px; margin-bottom: 8px; }
+        .modal-body { text-align: center; font-size: 14px; line-height: 1.6; color: var(--text-primary); margin-bottom: 24px; }
+        .btn-confirm { background: var(--accent-gold); color: #0b0d12; border: none; padding: 12px 32px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        
+        /* Atualizações */
+        .highlight-box { background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--accent-gold); padding: 16px; font-size: 14px; margin: 16px 0; text-align: left; }
     </style>
 </head>
 <body>
     <div id="canvas-container"><canvas id="renderCanvas"></canvas></div>
+    
     <header class="app-header">
         <button class="menu-toggle-btn" id="menuToggle">☰ Menu</button>
         <h1 class="app-title">Bíblia de Estudo <span>3D</span></h1>
     </header>
+    
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-nav">
-            <li class="nav-item active"><a href="#" id="btn-leitor">📖 Leitor Bíblico</a></li>
-            <li class="nav-item"><a href="#" id="btn-explorador">🏛️ Explorador 3D</a></li>
+            <li class="nav-item"><a href="#" onclick="mostrarTela('livros'); document.getElementById('sidebar').classList.remove('open')">📖 Leitor Bíblico</a></li>
+            <li class="nav-item"><a href="#" onclick="mostrarTela('atualizacoes'); document.getElementById('sidebar').classList.remove('open')">🔄 Atualizações</a></li>
+            <li class="nav-item"><a href="#" onclick="document.getElementById('leitor-panel').classList.add('hidden'); document.getElementById('sidebar').classList.remove('open')">🏛️ Explorador 3D</a></li>
         </ul>
     </aside>
+
     <main class="leitor-panel" id="leitor-panel">
+        <!-- TELA 1: LIVROS -->
         <div id="tela-livros">
             <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Antigo Testamento</h2>
             <div class="grid-livros" id="grid-vt"></div>
             <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px; margin-top: 40px;">Novo Testamento</h2>
             <div class="grid-livros" id="grid-nt"></div>
         </div>
+        
+        <!-- TELA 2: CAPÍTULOS -->
         <div id="tela-capitulos" class="view-hidden">
             <div class="nav-leitura">
                 <button class="btn-nav" onclick="mostrarTela('livros')">⬅ Voltar</button>
@@ -71,6 +90,8 @@
             </div>
             <div class="grid-capitulos" id="grid-capitulos-container"></div>
         </div>
+        
+        <!-- TELA 3: LEITURA -->
         <div id="tela-leitura" class="view-hidden">
             <div class="nav-leitura">
                 <button class="btn-nav" onclick="mostrarTela('capitulos')">⬅ Capítulos</button>
@@ -83,21 +104,86 @@
                 <button class="btn-nav" id="btn-next" onclick="navegar(1)">Próximo ➡</button>
             </div>
         </div>
+
+        <!-- TELA 4: ATUALIZAÇÕES -->
+        <div id="tela-atualizacoes" class="view-hidden">
+            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Histórico de Atualizações</h2>
+            <div class="highlight-box">
+                <strong>v2.1 - Instalação Nativa & Interface</strong><br><br>
+                - Novo ícone temático de alta resolução adicionado.<br>
+                - Implementação do sistema de instalação inteligente PWA.<br>
+                - Adição do painel de histórico de atualizações.<br>
+                - Correção de emblemas de navegador secundário no Android.
+            </div>
+            <div class="highlight-box">
+                <strong>v2.0 - O Cérebro do Banco de Dados</strong><br><br>
+                - Integração completa dos 66 livros da Bíblia Sagrada.<br>
+                - Motor de leitura com mais de 31 mil versículos renderizados dinamicamente.<br>
+                - Navegação contínua entre capítulos.
+            </div>
+        </div>
     </main>
+
+    <!-- POPUP DE INSTALAÇÃO DO APP -->
+    <div class="modal-overlay hidden" id="installModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Instalar Aplicativo</h2>
+                <p>Bíblia de Estudo 3D</p>
+            </div>
+            <div class="modal-body">
+                <img src="https://cdn-icons-png.flaticon.com/512/1453/1453982.png" width="80" style="margin-bottom: 15px;">
+                <p>Instale nosso aplicativo oficial no seu celular para ter acesso rápido, leitura offline e experiência em tela cheia (sem as bordas do navegador)!</p>
+            </div>
+            <button class="btn-confirm" id="btn-install-app">Instalar Agora</button>
+            <button class="btn-nav" id="btn-close-install" style="width: 100%;">Deixar para depois</button>
+        </div>
+    </div>
     
     <script src="js/engine3d/scene.js"></script>
-    <script src="js/components/ui.js"></script>
     <script src="js/core/app.js"></script>
     
-    <!-- ATIVAÇÃO DO PWA (APP NATIVO) -->
+    <!-- LÓGICA DE INSTALAÇÃO (PWA) -->
     <script>
+        // Funcionalidade do Menu Lateral
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Registro do Service Worker
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
-                navigator.serviceWorker.register("./sw.js")
-                .then(reg => console.log("Cérebro PWA instalado com sucesso!", reg))
-                .catch(err => console.error("Erro no PWA:", err));
+                navigator.serviceWorker.register("./sw.js").catch(err => console.error("Erro SW:", err));
             });
         }
+
+        // Lógica do Popup de Instalação Nativa
+        let deferredPrompt;
+        const installModal = document.getElementById('installModal');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Impede o navegador de mostrar o aviso padrão
+            deferredPrompt = e; // Salva o evento para usarmos no nosso botão
+            
+            // Mostra o nosso popup elegante após 3 segundos da pessoa entrar no app
+            setTimeout(() => {
+                installModal.classList.remove('hidden');
+            }, 3000);
+        });
+
+        document.getElementById('btn-install-app').addEventListener('click', () => {
+            installModal.classList.add('hidden'); // Esconde o popup
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Abre a tela preta nativa do Android para instalar
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        document.getElementById('btn-close-install').addEventListener('click', () => {
+            installModal.classList.add('hidden');
+        });
     </script>
 </body>
 </html>
