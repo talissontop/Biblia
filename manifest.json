@@ -1,8 +1,17 @@
 ﻿{
-  "name": "Bíblia",
-  "short_name": "Bíblia",
-  "start_url": "/index.html",
+  "name": "Bíblia de Estudo 3D",
+  "short_name": "Bíblia 3D",
+  "description": "Estudo profundo da Bíblia nos idiomas originais em ambiente 3D.",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f1117",
-  "theme_color": "#d4af37"
+  "theme_color": "#0f1117",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3389/3389081.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
