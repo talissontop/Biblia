@@ -185,5 +185,50 @@
             installModal.classList.add('hidden');
         });
     </script>
+    <!-- ATIVAÇÃO DO PWA (APP NATIVO + NOTIFICAÇÕES) -->
+    <script>
+        // 1. Pedir permissão de Notificação assim que entrar no app
+        if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+                if(permission === 'granted') {
+                    console.log('Permissão para notificações concedida pelo usuário.');
+                }
+            });
+        }
+
+        // 2. Registrar o Cérebro e Vigiar Atualizações
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    
+                    // Vigia se há uma atualização esperando
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Se tiver permissão, envia uma notificação local avisando!
+                                if (Notification.permission === 'granted') {
+                                    new Notification('Bíblia 3D Atualizada!', {
+                                        body: 'O aplicativo foi atualizado para a versão mais recente.',
+                                        icon: 'https://cdn-icons-png.flaticon.com/512/1453/1453982.png'
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+
+                // 3. O Pulo do Gato: Recarrega a tela sozinho se o Service Worker mudar
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        window.location.reload();
+                        refreshing = true;
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 </html>
+

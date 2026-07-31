@@ -1,0 +1,121 @@
+Write-Host "Iniciando Sistema Avançado de Controle de Cache e Notificações..." -ForegroundColor Cyan
+
+$projectPath = [System.IO.Path]::Combine($HOME, "Documents", "Biblia")
+Set-Location $projectPath
+
+# 1. GERADOR DE VERSÃO ÚNICA (O SEGREDO CONTRA O CACHE)
+# Pega a data e hora exata agora para criar uma versão que nunca se repete.
+$versaoUnica = Get-Date -Format "yyyyMMdd_HHmmss"
+Write-Host "   [+] Nova assinatura gerada: v$versaoUnica" -ForegroundColor Yellow
+
+# ==============================================================================
+# 2. O NOVO CÉREBRO PWA (sw.js) - EXTREMAMENTE AGRESSIVO
+# ==============================================================================
+$swContent = @"
+const CACHE_NAME = 'biblia-3d-cache-v$versaoUnica';
+const urlsToCache = [
+    './index.html',
+    './js/core/app.js',
+    './js/engine3d/scene.js',
+    './manifest.json'
+];
+
+// INSTALAÇÃO: Força o novo cérebro a assumir o controle imediatamente
+self.addEventListener('install', event => {
+    self.skipWaiting(); 
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    );
+});
+
+// ATIVAÇÃO: Destruidor de Cache Antigo (A Varredura)
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cache => {
+                    if (cache !== CACHE_NAME) {
+                        console.log('Limpando cache morto:', cache);
+                        return caches.delete(cache);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim()) // Exige o controle de todos os celulares logados
+    );
+});
+
+// BUSCA: Estratégia 'Network First' (Tenta a internet primeiro, se falhar usa o cache)
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        fetch(event.request).catch(() => caches.match(event.request))
+    );
+});
+"@
+Set-Content -Path ".\sw.js" -Value $swContent -Encoding UTF8
+Write-Host "   [+] sw.js recriado com Inteligência de Limpeza Agressiva." -ForegroundColor Green
+
+
+# ==============================================================================
+# 3. ATUALIZAÇÃO DO INDEX.HTML (INJETANDO NOTIFICAÇÕES E AUTO-RELOAD)
+# ==============================================================================
+$htmlIndex = ".\index.html"
+$htmlContentRaw = Get-Content $htmlIndex -Raw
+
+# Removemos o script de registro PWA antigo
+$htmlSemScriptAntigo = $htmlContentRaw -replace '(?s)<!-- ATIVAÇÃO DO PWA.*?</script>', ''
+
+# Criamos o Novo Script de Registro (Com Notificação e Reload)
+$novoScriptPWA = @"
+    <!-- ATIVAÇÃO DO PWA (APP NATIVO + NOTIFICAÇÕES) -->
+    <script>
+        // 1. Pedir permissão de Notificação assim que entrar no app
+        if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+                if(permission === 'granted') {
+                    console.log('Permissão para notificações concedida pelo usuário.');
+                }
+            });
+        }
+
+        // 2. Registrar o Cérebro e Vigiar Atualizações
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    
+                    // Vigia se há uma atualização esperando
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Se tiver permissão, envia uma notificação local avisando!
+                                if (Notification.permission === 'granted') {
+                                    new Notification('Bíblia 3D Atualizada!', {
+                                        body: 'O aplicativo foi atualizado para a versão mais recente.',
+                                        icon: 'https://cdn-icons-png.flaticon.com/512/1453/1453982.png'
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+
+                // 3. O Pulo do Gato: Recarrega a tela sozinho se o Service Worker mudar
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        window.location.reload();
+                        refreshing = true;
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+"@
+
+# Injeta a nova lógica antes do fechamento do body
+$htmlAtualizado = $htmlSemScriptAntigo -replace '</body>', $novoScriptPWA
+Set-Content -Path $htmlIndex -Value $htmlAtualizado -Encoding UTF8
+Write-Host "   [+] index.html atualizado com permissões de Notificação e Auto-Refresh." -ForegroundColor Green
+
+Write-Host "`n[SISTEMA BLINDADO] O Cache fantasma não será mais um problema!" -ForegroundColor Yellow
