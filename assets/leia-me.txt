@@ -1,0 +1,8 @@
+﻿======================================
+      PASTA DE RECURSOS VISUAIS       
+======================================
+Como usar estas pastas:
+
+1. assets/models/: Salve aqui os arquivos .glb ou .gltf dos cenários 3D (ex: Tabernáculo, Templo).
+2. assets/textures/: Salve aqui as imagens PNG/JPG de materiais, chãos e paredes.
+3. assets/icons/: Salve aqui a logo do aplicativo (icon-192.png e icon-512.png) para ele virar um App de celular.

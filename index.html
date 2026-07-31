@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bíblia de Estudo 3D - Originais</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg-dark: #0f1117;
+            --panel-bg: rgba(22, 26, 36, 0.85);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --accent-gold: #d4af37;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --sidebar-width: 280px;
+        }
+        body { font-family: var(--font-main); background-color: var(--bg-dark); color: var(--text-primary); overflow: hidden; height: 100vh; width: 100vw; position: relative; }
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #1e2538 0%, #0a0c10 100%); display: flex; align-items: center; justify-content: center; }
+        .canvas-placeholder { text-align: center; color: rgba(212, 175, 55, 0.3); text-transform: uppercase; letter-spacing: 3px; font-size: 14px; }
+        .app-header { position: absolute; top: 0; left: 0; right: 0; height: 60px; background: var(--panel-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--panel-border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 10; }
+        .menu-toggle-btn { background: transparent; border: 1px solid var(--panel-border); color: var(--accent-gold); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: all 0.2s ease; }
+        .app-title { font-size: 18px; font-weight: 600; letter-spacing: 1px; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .app-title span { color: var(--accent-gold); font-size: 12px; border: 1px solid var(--accent-gold); padding: 2px 6px; border-radius: 4px; }
+        .sidebar { position: absolute; top: 60px; left: -280px; width: var(--sidebar-width); height: calc(100vh - 60px); background: var(--panel-bg); backdrop-filter: blur(16px); border-right: 1px solid var(--panel-border); z-index: 20; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .sidebar.open { left: 0; }
+        .sidebar-nav { list-style: none; padding: 20px 0; }
+        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 14px 24px; color: var(--text-secondary); text-decoration: none; font-size: 15px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 10, 0.85); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 1; visibility: visible; }
+        .modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .modal-card { background: #141822; border: 1px solid var(--accent-gold); border-radius: 12px; max-width: 540px; width: 100%; padding: 30px; text-align: center; }
+        .modal-header h2 { color: var(--accent-gold); font-size: 22px; margin-bottom: 8px; }
+        .modal-header p { color: var(--text-secondary); font-size: 13px; text-transform: uppercase; margin-bottom: 20px; }
+        .modal-body { text-align: left; font-size: 14px; line-height: 1.6; color: var(--text-primary); margin-bottom: 24px; }
+        .highlight-box { background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--accent-gold); padding: 12px 16px; font-size: 13px; margin: 16px 0; }
+        .btn-confirm { background: var(--accent-gold); color: #0b0d12; border: none; padding: 12px 32px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <div class="canvas-placeholder">
+            [ Renderizador 3D WebGL em Breve ]<br>
+            <small style="color: #64748b; font-size: 11px;">Carregando ambiente espacial...</small>
+        </div>
+    </div>
+    <header class="app-header">
+        <button class="menu-toggle-btn" id="menuToggle">☰ Menu</button>
+        <h1 class="app-title">Bíblia de Estudo <span>3D</span></h1>
+        <button class="menu-toggle-btn" id="infoBtn">ℹ️ Aviso</button>
+    </header>
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-nav">
+            <li class="nav-item active"><a href="#">📖 Leitor Bíblico</a></li>
+            <li class="nav-item"><a href="#">🏛️ Explorador 3D</a></li>
+            <li class="nav-item"><a href="#">🔍 Estudo & Originais</a></li>
+            <li class="nav-item"><a href="#">🔗 Referências</a></li>
+            <li class="nav-item"><a href="#">📝 Anotações</a></li>
+        </ul>
+    </aside>
+    <div class="modal-overlay" id="disclaimerModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Fidelidade & Propósito</h2>
+                <p>Termo de Uso</p>
+            </div>
+            <div class="modal-body">
+                <p><strong>Bem-vindo à Bíblia de Estudo 3D!</strong></p>
+                <div class="highlight-box">
+                    <strong>Tradução dos Originais:</strong> As análises são elaboradas a partir do <strong>Hebraico e Grego Originais</strong>.
+                </div>
+                <p><strong>Importante:</strong> Este aplicativo é apenas uma <strong>ferramenta de apoio</strong>. Ele não substitui a leitura da Bíblia Sagrada.</p>
+            </div>
+            <button class="btn-confirm" id="closeModalBtn">Compreendo e Quero Continuar</button>
+        </div>
+    </div>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const disclaimerModal = document.getElementById('disclaimerModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const infoBtn = document.getElementById('infoBtn');
+
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        closeModalBtn.addEventListener('click', () => disclaimerModal.classList.add('hidden'));
+        infoBtn.addEventListener('click', () => disclaimerModal.classList.remove('hidden'));
+    </script>
+</body>
+</html>
