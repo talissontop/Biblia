@@ -1,109 +1,105 @@
 // ============================================================
-// sw.js - Service Worker com Cache Otimizado para MPE
+// sw.js - Service Worker Limpo e Funcional
 // ============================================================
 
-const CACHE_VERSION = 'biblia-3d-cache-v20260801-180851';
+const CACHE_VERSION = 'biblia-3d-cache-v20260801-182855';
 const STATIC_CACHE = cache-static-\;
 const DYNAMIC_CACHE = cache-dynamic-\;
-const IMAGE_CACHE = cache-images-\;
 
 const URLS_TO_CACHE = [
     './index.html',
-    './profile.css',
+    './app.js',
     './profile.js',
+    './profile.css',
     './css/style.css',
-    './js/core/app.js',
     './manifest.json',
-    './img/logo_mpe.jpg',
-    './data/verses/biblia_completa.json'
+    './img/logo_mpe.jpg'
 ];
 
-// --- INSTALL: Cache agressivo ---
-self.addEventListener('install', (event) => {
+// --- INSTALL ---
+self.addEventListener('install', function(event) {
+    console.log('[SW] Instalando... Versão:', CACHE_VERSION);
     self.skipWaiting();
+    
     event.waitUntil(
-        caches.open(STATIC_CACHE).then((cache) => {
-            return cache.addAll(URLS_TO_CACHE)
-                .catch(err => console.error('[SW] Erro ao cachear assets:', err));
+        caches.open(STATIC_CACHE).then(function(cache) {
+            console.log('[SW] Cacheando assets...');
+            return cache.addAll(URLS_TO_CACHE).catch(function(err) {
+                console.warn('[SW] Aviso ao cachear:', err.message);
+                // Continua mesmo se alguns assets falharem
+                return Promise.resolve();
+            });
         })
     );
 });
 
-// --- ACTIVATE: Limpeza de caches antigos ---
-self.addEventListener('activate', (event) => {
+// --- ACTIVATE ---
+self.addEventListener('activate', function(event) {
+    console.log('[SW] Ativando... Limpando caches antigos');
+    
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
+        caches.keys().then(function(cacheNames) {
             return Promise.all(
-                cacheNames
-                    .filter(name => name !== STATIC_CACHE && name !== DYNAMIC_CACHE && name !== IMAGE_CACHE)
-                    .map(name => {
-                        console.log('[SW] Deletando cache obsoleto:', name);
-                        return caches.delete(name);
-                    })
+                cacheNames.map(function(cacheName) {
+                    if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+                        console.log('[SW] Deletando cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
             );
-        }).then(() => self.clients.claim())
+        }).then(function() {
+            return self.clients.claim();
+        })
     );
 });
 
-// --- FETCH: Estratégia de cache inteligente ---
-self.addEventListener('fetch', (event) => {
-    const { request } = event;
-    const url = new URL(request.url);
-
+// --- FETCH ---
+self.addEventListener('fetch', function(event) {
+    var request = event.request;
+    var url = new URL(request.url);
+    
     // Ignora cross-origin
-    if (url.origin !== location.origin) return;
-
+    if (url.origin !== location.origin) {
+        return;
+    }
+    
     // Ignora non-GET
-    if (request.method !== 'GET') return;
-
-    // Network-first para dados
-    if (/\.(json|html|manifest)$/.test(url.pathname)) {
+    if (request.method !== 'GET') {
+        return;
+    }
+    
+    // Para dados JSON: network-first
+    if (/\.json$/.test(url.pathname)) {
         event.respondWith(
             fetch(request)
-                .then(response => {
+                .then(function(response) {
                     if (response.ok) {
-                        const cache = caches.open(DYNAMIC_CACHE);
-                        cache.then(c => c.put(request, response.clone()));
+                        var cache = caches.open(DYNAMIC_CACHE);
+                        cache.then(function(c) {
+                            c.put(request, response.clone());
+                        });
                     }
                     return response;
                 })
-                .catch(() => caches.match(request))
+                .catch(function(err) {
+                    console.log('[SW] Network falhou, usando cache para:', request.url);
+                    return caches.match(request);
+                })
         );
         return;
     }
-
-    // Cache-first para imagens
-    if (/\.(jpg|jpeg|png|gif|svg|webp)$/.test(url.pathname)) {
-        event.respondWith(
-            caches.match(request)
-                .then(cached => cached || fetch(request)
-                    .then(response => {
-                        if (response.ok) {
-                            caches.open(IMAGE_CACHE).then(c => c.put(request, response.clone()));
-                        }
-                        return response;
-                    })
-                )
-        );
-        return;
-    }
-
+    
     // Fallback: cache ou network
     event.respondWith(
         caches.match(request)
-            .then(response => response || fetch(request))
-            .catch(() => new Response('Offline', { status: 503 }))
+            .then(function(response) {
+                return response || fetch(request);
+            })
+            .catch(function(err) {
+                console.error('[SW] Erro:', err.message);
+                return new Response('Offline', { status: 503 });
+            })
     );
-});
-
-// --- Comunicação com cliente ---
-self.addEventListener('message', (event) => {
-    if (event.data.type === 'CHECK_UPDATE') {
-        event.ports[0].postMessage({
-            type: 'CURRENT_VERSION',
-            version: CACHE_VERSION
-        });
-    }
 });
 
 console.log('[SW] Service Worker carregado - Versão:', CACHE_VERSION);
