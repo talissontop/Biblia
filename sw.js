@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'biblia-3d-cache-v20260801_160620';
+const CACHE_NAME = 'biblia-3d-cache-v20260801-172533_160620';
 const urlsToCache = [
     './index.html',
     './profile.css',
