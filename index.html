@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./profile.css">
     <link rel="manifest" href="./manifest.json">
     <style>
-        /* VISUAL PREMIUM ESCURO E DOURADO */
         body {
             margin: 0; padding: 0;
             background-color: #0d1117;
@@ -17,8 +16,6 @@
         }
         main { padding: 20px; text-align: center; }
         h2 { color: #d4af37; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 20px; }
-        
-        /* GRID DE BOTÕES CORRETA */
         .grid-botoes {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -34,22 +31,19 @@
             cursor: pointer;
             font-weight: bold;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            transition: 0.2s;
         }
         button:hover { background: #d4af37; color: #0d1117; }
         .btn-voltar { background: #21262d; color: #c9d1d9; width: 100%; max-width: 200px; margin: 0 auto 20px auto; display: block; }
         
-        /* CONTROLE DE TELAS DO SEU APP.JS */
+        /* Compatibilidade total com o sistema de hidden do seu app.js */
         .view-hidden { display: none !important; }
         
-        /* TELA DE LEITURA */
         #leitor-panel { background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #30363d; max-height: 70vh; overflow-y: auto; text-align: left; }
         .versiculo-box { margin-bottom: 12px; font-size: 1.1em; line-height: 1.6; }
         .num { color: #d4af37; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <!-- Container onde o profile.js idealmente deveria injetar -->
     <div id="profile-container"></div>
 
     <main>
@@ -61,13 +55,11 @@
             </div>
         </div>
 
-        <!-- TELA 2: LIVROS (Escondida no início) -->
+        <!-- TELA 2: LIVROS -->
         <div id="tela-livros" class="view-hidden">
             <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar ao Menu</button>
-            
             <h2>Velho Testamento</h2>
             <div id="grid-vt" class="grid-botoes"></div>
-            
             <h2>Novo Testamento</h2>
             <div id="grid-nt" class="grid-botoes"></div>
         </div>
@@ -79,15 +71,13 @@
             <div id="grid-capitulos-container" class="grid-botoes"></div>
         </div>
 
-        <!-- TELA 4: LEITURA (AGORA OS VERSÍCULOS APARECEM!) -->
+        <!-- TELA 4: LEITURA DE VERSÍCULOS -->
         <div id="tela-leitura" class="view-hidden">
             <button id="btn-voltar-leitura" class="btn-voltar">⬅ Voltar</button>
             <h2 id="titulo-leitura"></h2>
-            
             <div id="leitor-panel">
                 <div id="texto-biblico"></div>
             </div>
-            
             <div id="botoes-navegacao-inferior" style="display: none; gap: 10px; justify-content: center; margin-top: 20px;">
                 <button id="btn-prev" class="btn-voltar" onclick="navegar(-1)">Anterior</button>
                 <button id="btn-next" class="btn-voltar" onclick="navegar(1)">Próximo</button>
@@ -103,7 +93,6 @@
     <script>
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-        // Funções para o Menu Principal funcionar em harmonia com o app.js
         function abrirBiblia() {
             document.getElementById('tela-menu').classList.add('view-hidden');
             document.getElementById('tela-livros').classList.remove('view-hidden');
