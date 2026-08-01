@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bíblia de Estudo 3D - Originais</title>
+    <title>Bíblia e Harpa de Estudo 3D</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f1117">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1453/1453982.png">
@@ -28,31 +28,20 @@
         .leitor-panel.hidden { opacity: 0; pointer-events: none; }
         .view-hidden { display: none !important; }
         
-        /* Grids e Botões */
         .grid-livros { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 30px; }
-        .btn-livro { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 12px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .btn-livro { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 12px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 14px; text-align: left; }
         .btn-livro:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
         .grid-capitulos { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; }
         .btn-capitulo { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 15px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
         .btn-capitulo:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
         .nav-leitura { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--panel-border); }
-        .nav-leitura-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-bottom: 1px solid var(--panel-border); }
+        .nav-leitura-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
         .btn-nav { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-nav:hover { background: rgba(212, 175, 55, 0.15); }
         .versiculo-box { margin-bottom: 20px; line-height: 1.8; }
-        .versiculo-texto { font-size: 18px; color: #fff; }
+        .versiculo-texto { font-size: 18px; color: #fff; white-space: pre-line; }
         .versiculo-texto .num { color: var(--accent-gold); font-weight: bold; margin-right: 8px; font-size: 14px; }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 4px; }
-        
-        /* Modais */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 10, 0.85); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 1; visibility: visible; transition: all 0.3s; }
-        .modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .modal-card { background: #141822; border: 1px solid var(--accent-gold); border-radius: 12px; max-width: 400px; width: 100%; padding: 30px; text-align: center; }
-        .modal-header h2 { color: var(--accent-gold); font-size: 22px; margin-bottom: 8px; }
-        .modal-body { text-align: center; font-size: 14px; line-height: 1.6; color: var(--text-primary); margin-bottom: 24px; }
-        .btn-confirm { background: var(--accent-gold); color: #0b0d12; border: none; padding: 12px 32px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
-        
-        /* Atualizações */
         .highlight-box { background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--accent-gold); padding: 16px; font-size: 14px; margin: 16px 0; text-align: left; }
     </style>
 </head>
@@ -67,13 +56,12 @@
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-nav">
             <li class="nav-item"><a href="#" onclick="mostrarTela('livros'); document.getElementById('sidebar').classList.remove('open')">📖 Leitor Bíblico</a></li>
+            <li class="nav-item"><a href="#" onclick="carregarHarpa(); document.getElementById('sidebar').classList.remove('open')">🎵 Harpa Cristã</a></li>
             <li class="nav-item"><a href="#" onclick="mostrarTela('atualizacoes'); document.getElementById('sidebar').classList.remove('open')">🔄 Atualizações</a></li>
-            <li class="nav-item"><a href="#" onclick="document.getElementById('leitor-panel').classList.add('hidden'); document.getElementById('sidebar').classList.remove('open')">🏛️ Explorador 3D</a></li>
         </ul>
     </aside>
 
     <main class="leitor-panel" id="leitor-panel">
-        <!-- TELA 1: LIVROS -->
         <div id="tela-livros">
             <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Antigo Testamento</h2>
             <div class="grid-livros" id="grid-vt"></div>
@@ -81,7 +69,6 @@
             <div class="grid-livros" id="grid-nt"></div>
         </div>
         
-        <!-- TELA 2: CAPÍTULOS -->
         <div id="tela-capitulos" class="view-hidden">
             <div class="nav-leitura">
                 <button class="btn-nav" onclick="mostrarTela('livros')">⬅ Voltar</button>
@@ -91,144 +78,47 @@
             <div class="grid-capitulos" id="grid-capitulos-container"></div>
         </div>
         
-        <!-- TELA 3: LEITURA -->
         <div id="tela-leitura" class="view-hidden">
             <div class="nav-leitura">
-                <button class="btn-nav" onclick="mostrarTela('capitulos')">⬅ Capítulos</button>
+                <button class="btn-nav" id="btn-voltar-leitura" onclick="mostrarTela('capitulos')">⬅ Voltar</button>
                 <h2 id="titulo-leitura" style="color: var(--accent-gold);"></h2>
                 <div></div>
             </div>
             <div id="texto-biblico"></div>
-            <div class="nav-leitura-bottom">
+            <div class="nav-leitura-bottom" id="botoes-navegacao-inferior">
                 <button class="btn-nav" id="btn-prev" onclick="navegar(-1)">⬅ Anterior</button>
                 <button class="btn-nav" id="btn-next" onclick="navegar(1)">Próximo ➡</button>
             </div>
         </div>
 
-        <!-- TELA 4: ATUALIZAÇÕES -->
+        <div id="tela-harpa" class="view-hidden">
+            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Harpa Cristã (Hinos)</h2>
+            <div class="grid-livros" id="grid-hinos"></div>
+        </div>
+
         <div id="tela-atualizacoes" class="view-hidden">
             <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Histórico de Atualizações</h2>
             <div class="highlight-box">
-                <strong>v2.1 - Instalação Nativa & Interface</strong><br><br>
-                - Novo ícone temático de alta resolução adicionado.<br>
-                - Implementação do sistema de instalação inteligente PWA.<br>
-                - Adição do painel de histórico de atualizações.<br>
-                - Correção de emblemas de navegador secundário no Android.
-            </div>
-            <div class="highlight-box">
-                <strong>v2.0 - O Cérebro do Banco de Dados</strong><br><br>
-                - Integração completa dos 66 livros da Bíblia Sagrada.<br>
-                - Motor de leitura com mais de 31 mil versículos renderizados dinamicamente.<br>
-                - Navegação contínua entre capítulos.
+                <strong>v2.2 - Harpa Cristã Integrada</strong><br><br>
+                - Adicionada a Harpa Cristã completa com todos os hinos.<br>
+                - Sistema de cache inteligente com versão $versaoUnica.
             </div>
         </div>
     </main>
 
-    <!-- POPUP DE INSTALAÇÃO DO APP -->
-    <div class="modal-overlay hidden" id="installModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2>Instalar Aplicativo</h2>
-                <p>Bíblia de Estudo 3D</p>
-            </div>
-            <div class="modal-body">
-                <img src="https://cdn-icons-png.flaticon.com/512/1453/1453982.png" width="80" style="margin-bottom: 15px;">
-                <p>Instale nosso aplicativo oficial no seu celular para ter acesso rápido, leitura offline e experiência em tela cheia (sem as bordas do navegador)!</p>
-            </div>
-            <button class="btn-confirm" id="btn-install-app">Instalar Agora</button>
-            <button class="btn-nav" id="btn-close-install" style="width: 100%;">Deixar para depois</button>
-        </div>
-    </div>
-    
     <script src="js/engine3d/scene.js"></script>
     <script src="js/core/app.js"></script>
     
-    <!-- LÓGICA DE INSTALAÇÃO (PWA) -->
     <script>
-        // Funcionalidade do Menu Lateral
         document.getElementById('menuToggle').addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('open');
         });
-
-        // Registro do Service Worker
+        if ('Notification' in window) Notification.requestPermission();
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
                 navigator.serviceWorker.register("./sw.js").catch(err => console.error("Erro SW:", err));
             });
         }
-
-        // Lógica do Popup de Instalação Nativa
-        let deferredPrompt;
-        const installModal = document.getElementById('installModal');
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); // Impede o navegador de mostrar o aviso padrão
-            deferredPrompt = e; // Salva o evento para usarmos no nosso botão
-            
-            // Mostra o nosso popup elegante após 3 segundos da pessoa entrar no app
-            setTimeout(() => {
-                installModal.classList.remove('hidden');
-            }, 3000);
-        });
-
-        document.getElementById('btn-install-app').addEventListener('click', () => {
-            installModal.classList.add('hidden'); // Esconde o popup
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); // Abre a tela preta nativa do Android para instalar
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        document.getElementById('btn-close-install').addEventListener('click', () => {
-            installModal.classList.add('hidden');
-        });
-    </script>
-    <!-- ATIVAÇÃO DO PWA (APP NATIVO + NOTIFICAÇÕES) -->
-    <script>
-        // 1. Pedir permissão de Notificação assim que entrar no app
-        if ('Notification' in window) {
-            Notification.requestPermission().then(permission => {
-                if(permission === 'granted') {
-                    console.log('Permissão para notificações concedida pelo usuário.');
-                }
-            });
-        }
-
-        // 2. Registrar o Cérebro e Vigiar Atualizações
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(reg => {
-                    
-                    // Vigia se há uma atualização esperando
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // Se tiver permissão, envia uma notificação local avisando!
-                                if (Notification.permission === 'granted') {
-                                    new Notification('Bíblia 3D Atualizada!', {
-                                        body: 'O aplicativo foi atualizado para a versão mais recente.',
-                                        icon: 'https://cdn-icons-png.flaticon.com/512/1453/1453982.png'
-                                    });
-                                }
-                            }
-                        });
-                    });
-                });
-
-                // 3. O Pulo do Gato: Recarrega a tela sozinho se o Service Worker mudar
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    if (!refreshing) {
-                        window.location.reload();
-                        refreshing = true;
-                    }
-                });
-            });
-        }
     </script>
 </body>
 </html>
-
