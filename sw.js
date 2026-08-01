@@ -1,11 +1,10 @@
-const CACHE_NAME = 'biblia-3d-cache-v2026-08-01_125618';
+const CACHE_NAME = 'biblia-3d-cache-v2026-08-01_132934';
 const urlsToCache = [
     './index.html',
     './js/core/app.js',
     './js/engine3d/scene.js',
     './manifest.json',
     './data/verses/biblia_completa.json',
-    './data/verses/harpa_crista.json'
 ];
 
 self.addEventListener('install', event => {
