@@ -8,177 +8,110 @@
     <link rel="stylesheet" href="./profile.css">
     <link rel="manifest" href="./manifest.json">
     <style>
-        /* ESTILOS DE GARANTIA: Força o visual premium e escuro caso o style.css falhe */
-        body, html {
+        /* VISUAL PREMIUM ESCURO E DOURADO */
+        body {
             margin: 0; padding: 0;
-            background-color: #0d1117; /* Fundo escuro premium */
+            background-color: #0d1117;
             color: #e6edf3;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
         }
-        #app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        /* Trava o perfil no topo */
-        #profile-container {
-            width: 100%;
-            background: #161b22;
-            border-bottom: 2px solid #d4af37; /* Detalhe em dourado */
-            padding: 10px;
-            box-sizing: border-box;
-            order: -1; /* Força a ficar sempre no topo */
-        }
-        main {
-            padding: 20px;
-            flex-grow: 1;
-        }
-        h2 { color: #d4af37; text-align: center; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        main { padding: 20px; text-align: center; }
+        h2 { color: #d4af37; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 20px; }
         
-        /* Grid perfeita para os botões */
+        /* GRID DE BOTÕES CORRETA */
         .grid-botoes {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
         }
-        button, .btn-livro, .btn-capitulo, .btn-voltar {
+        button {
             background: linear-gradient(145deg, #1f242c, #161b22);
             color: #d4af37;
             border: 1px solid #30363d;
-            padding: 12px 15px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            transition: 0.2s;
         }
-        button:hover {
-            background: #d4af37;
-            color: #0d1117;
-            border-color: #d4af37;
-        }
-        .btn-voltar {
-            background: #21262d; color: #c9d1d9; border-color: #30363d;
-            margin-bottom: 15px; width: 100%; max-width: 200px; display: block;
-        }
+        button:hover { background: #d4af37; color: #0d1117; }
+        .btn-voltar { background: #21262d; color: #c9d1d9; width: 100%; max-width: 200px; margin: 0 auto 20px auto; display: block; }
         
-        /* Sistema de Telas */
-        .view-hidden, .tela-oculta { display: none !important; }
+        /* CONTROLE DE TELAS DO SEU APP.JS */
+        .view-hidden { display: none !important; }
         
-        /* Painel de Leitura */
-        #leitor-panel {
-            background: #161b22;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #30363d;
-            max-height: 70vh;
-            overflow-y: auto;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        .versiculo-box { margin-bottom: 10px; }
+        /* TELA DE LEITURA */
+        #leitor-panel { background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #30363d; max-height: 70vh; overflow-y: auto; text-align: left; }
+        .versiculo-box { margin-bottom: 12px; font-size: 1.1em; line-height: 1.6; }
         .num { color: #d4af37; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <div id="app-container">
-        <!-- O Perfil vai carregar obrigatoriamente aqui no topo -->
-        <div id="profile-container"></div>
+    <!-- Container onde o profile.js idealmente deveria injetar -->
+    <div id="profile-container"></div>
 
-        <main>
-            <!-- TELA 1: MENU PRINCIPAL (De volta!) -->
-            <div id="tela-menu">
-                <h2>Menu Principal</h2>
-                <div class="grid-botoes" style="grid-template-columns: 1fr; max-width: 300px; margin: 0 auto;">
-                    <button class="btn-livro" style="padding: 20px; font-size: 1.2em;" onclick="abrirSeletorLivros()">📖 Ler Bíblia</button>
-                    <!-- Pode adicionar outros botões aqui no futuro -->
-                </div>
+    <main>
+        <!-- TELA 1: MENU PRINCIPAL -->
+        <div id="tela-menu">
+            <h2>Bem-vindo à Bíblia 3D</h2>
+            <div class="grid-botoes" style="grid-template-columns: 1fr; max-width: 250px; margin: 0 auto;">
+                <button style="padding: 20px; font-size: 1.2em;" onclick="abrirBiblia()">📖 Ler Bíblia</button>
             </div>
+        </div>
 
-            <!-- TELA 2: LIVROS (VT e NT organizados) -->
-            <div id="tela-livros" class="view-hidden tela-oculta">
-                <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar ao Menu</button>
-                
-                <h2>Velho Testamento</h2>
-                <div id="grid-vt" class="grid-botoes"></div>
-                
-                <h2>Novo Testamento</h2>
-                <div id="grid-nt" class="grid-botoes"></div>
+        <!-- TELA 2: LIVROS (Escondida no início) -->
+        <div id="tela-livros" class="view-hidden">
+            <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar ao Menu</button>
+            
+            <h2>Velho Testamento</h2>
+            <div id="grid-vt" class="grid-botoes"></div>
+            
+            <h2>Novo Testamento</h2>
+            <div id="grid-nt" class="grid-botoes"></div>
+        </div>
+
+        <!-- TELA 3: CAPÍTULOS -->
+        <div id="tela-capitulos" class="view-hidden">
+            <button class="btn-voltar" onclick="mostrarTela('livros')">⬅ Voltar aos Livros</button>
+            <h2 id="titulo-livro-selecionado"></h2>
+            <div id="grid-capitulos-container" class="grid-botoes"></div>
+        </div>
+
+        <!-- TELA 4: LEITURA (AGORA OS VERSÍCULOS APARECEM!) -->
+        <div id="tela-leitura" class="view-hidden">
+            <button id="btn-voltar-leitura" class="btn-voltar">⬅ Voltar</button>
+            <h2 id="titulo-leitura"></h2>
+            
+            <div id="leitor-panel">
+                <div id="texto-biblico"></div>
             </div>
-
-            <!-- TELA 3: CAPÍTULOS -->
-            <div id="tela-capitulos" class="view-hidden tela-oculta">
-                <button class="btn-voltar" onclick="voltarParaLivros()">⬅ Voltar aos Livros</button>
-                <h2 id="titulo-livro-selecionado"></h2>
-                <div id="grid-capitulos-container" class="grid-botoes"></div>
+            
+            <div id="botoes-navegacao-inferior" style="display: none; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="btn-prev" class="btn-voltar" onclick="navegar(-1)">Anterior</button>
+                <button id="btn-next" class="btn-voltar" onclick="navegar(1)">Próximo</button>
             </div>
+        </div>
 
-            <!-- TELA 4: LEITURA -->
-            <div id="tela-leitura" class="view-hidden tela-oculta">
-                <button id="btn-voltar-leitura" class="btn-voltar">⬅ Voltar</button>
-                <h2 id="titulo-leitura"></h2>
-                
-                <div id="leitor-panel" class="painel-rolagem">
-                    <div id="texto-biblico"></div>
-                </div>
-                
-                <div id="botoes-navegacao-inferior" style="display: none; gap: 10px; justify-content: center; margin-top: 20px;">
-                    <button id="btn-prev" class="btn-voltar" onclick="navegar(-1)">Anterior</button>
-                    <button id="btn-next" class="btn-voltar" onclick="navegar(1)">Próximo</button>
-                </div>
-            </div>
-
-            <!-- Telas ocultas do app.js -->
-            <div id="tela-harpa" class="view-hidden tela-oculta"></div>
-            <div id="tela-atualizacoes" class="view-hidden tela-oculta"></div>
-        </main>
-    </div>
+        <div id="tela-harpa" class="view-hidden"></div>
+        <div id="tela-atualizacoes" class="view-hidden"></div>
+    </main>
 
     <script src="./profile.js"></script>
     <script src="./js/core/app.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
-        }
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-        // Funções vitais para garantir que o Menu funcione integrado ao seu app.js
+        // Funções para o Menu Principal funcionar em harmonia com o app.js
+        function abrirBiblia() {
+            document.getElementById('tela-menu').classList.add('view-hidden');
+            document.getElementById('tela-livros').classList.remove('view-hidden');
+        }
         function voltarParaMenu() {
             document.getElementById('tela-livros').classList.add('view-hidden');
-            document.getElementById('tela-livros').classList.add('tela-oculta');
             document.getElementById('tela-menu').classList.remove('view-hidden');
-            document.getElementById('tela-menu').classList.remove('tela-oculta');
         }
-
-        function abrirSeletorLivros() {
-            document.getElementById('tela-menu').classList.add('view-hidden');
-            document.getElementById('tela-menu').classList.add('tela-oculta');
-            document.getElementById('tela-livros').classList.remove('view-hidden');
-            document.getElementById('tela-livros').classList.remove('tela-oculta');
-        }
-
-        function voltarParaLivros() {
-            // Esconde todas as telas e mostra a de livros
-            document.querySelectorAll('main > div').forEach(d => {
-                d.classList.add('view-hidden');
-                d.classList.add('tela-oculta');
-            });
-            document.getElementById('tela-livros').classList.remove('view-hidden');
-            document.getElementById('tela-livros').classList.remove('tela-oculta');
-        }
-        
-        // Garante que ao iniciar a página, apenas o menu apareça
-        window.onload = () => {
-            setTimeout(() => {
-                document.querySelectorAll('main > div').forEach(d => {
-                    d.classList.add('view-hidden');
-                    d.classList.add('tela-oculta');
-                });
-                document.getElementById('tela-menu').classList.remove('view-hidden');
-                document.getElementById('tela-menu').classList.remove('tela-oculta');
-            }, 300); // Aguarda o app.js carregar
-        };
     </script>
 </body>
 </html>
