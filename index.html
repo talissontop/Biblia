@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./profile.css">
     <link rel="manifest" href="./manifest.json">
+    <style>
+        /* Garante que o sistema de telas do seu app.js funcione perfeitamente */
+        .view-hidden { display: none !important; }
+    </style>
 </head>
 <body>
     <div id="app-container">
@@ -14,43 +18,40 @@
         <div id="profile-container"></div>
 
         <main>
-            <!-- TELA 1: Menu Principal -->
-            <div id="menu-principal" class="tela ativa">
-                <div class="grid-botoes">
-                    <button class="btn-livro" onclick="abrirSeletorLivros()">Ler Bíblia</button>
-                </div>
-            </div>
-
-            <!-- TELA 2: Livros (Agora com VT e NT separados como seu app.js exige) -->
-            <div id="tela-livros" class="tela">
-                <button class="btn-voltar" onclick="voltarMenu()">Voltar</button>
-                
+            <!-- TELA 1: LIVROS (Menu Principal direto na Bíblia) -->
+            <div id="tela-livros">
                 <h2>Velho Testamento</h2>
-                <div id="vt" class="grid-botoes"></div>
+                <div id="grid-vt" class="grid-botoes"></div>
                 
                 <h2>Novo Testamento</h2>
-                <div id="nt" class="grid-botoes"></div>
+                <div id="grid-nt" class="grid-botoes"></div>
             </div>
 
-            <!-- TELA 3: Capítulos -->
-            <div id="tela-capitulos" class="tela">
-                <button class="btn-voltar" onclick="mostrarTela('tela-livros')">Voltar</button>
-                <h2 id="titulo-livro"></h2>
-                <div id="grid-capitulos" class="grid-botoes"></div>
+            <!-- TELA 2: CAPÍTULOS -->
+            <div id="tela-capitulos" class="view-hidden">
+                <button class="btn-voltar" onclick="mostrarTela('livros')">Voltar aos Livros</button>
+                <h2 id="titulo-livro-selecionado"></h2>
+                <div id="grid-capitulos-container" class="grid-botoes"></div>
             </div>
 
-            <!-- TELA 4: Leitura -->
-            <div id="tela-leitura" class="tela">
-                <button id="btn-voltar-leitura" class="btn-voltar" onclick="mostrarTela('tela-capitulos')">Voltar</button>
+            <!-- TELA 3: LEITURA -->
+            <div id="tela-leitura" class="view-hidden">
+                <button id="btn-voltar-leitura" class="btn-voltar">Voltar</button>
                 <h2 id="titulo-leitura"></h2>
                 
-                <!-- O PAINEL DE LEITURA (Resolve o erro do scrollTop) -->
                 <div id="leitor-panel" class="painel-rolagem">
                     <div id="texto-biblico"></div>
                 </div>
                 
-                <div id="botoes-navegacao-inferior"></div>
+                <div id="botoes-navegacao-inferior" style="display: none; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <button id="btn-prev" class="btn-voltar" onclick="navegar(-1)">Anterior</button>
+                    <button id="btn-next" class="btn-voltar" onclick="navegar(1)">Próximo</button>
+                </div>
             </div>
+
+            <!-- TELAS OCULTAS (Para o seu JS não dar erro ao tentar escondê-las) -->
+            <div id="tela-harpa" class="view-hidden"><div id="grid-hinos"></div></div>
+            <div id="tela-atualizacoes" class="view-hidden"></div>
         </main>
     </div>
 
