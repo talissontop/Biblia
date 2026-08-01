@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'biblia-3d-cache-v20260801_141050';
+﻿const CACHE_NAME = 'biblia-3d-cache-v20260801_152918';
 const urlsToCache = [
     './index.html',
     './profile.css',
@@ -30,3 +30,7 @@ self.addEventListener('fetch', event => {
     event.respondW
     event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
 });
+
+
+
+

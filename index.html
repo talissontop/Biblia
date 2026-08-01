@@ -3,29 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bíblia e Jogo de Estudo 3D</title>
+    <title>Bíblia 3D</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./profile.css">
     <link rel="manifest" href="./manifest.json">
 </head>
 <body>
     <div id="app-container">
-        <!-- Barra de Perfil Superior -->
+        <!-- Barra de Perfil -->
         <div id="profile-container"></div>
 
-        <!-- Menu Principal / Navegação -->
         <main>
+            <!-- TELA 1: Menu Principal -->
             <div id="menu-principal" class="tela ativa">
                 <div class="grid-botoes">
                     <button class="btn-livro" onclick="abrirSeletorLivros()">Ler Bíblia</button>
                 </div>
             </div>
 
-            <!-- Demais telas do app -->
+            <!-- TELA 2: Livros (Agora com VT e NT separados como seu app.js exige) -->
+            <div id="tela-livros" class="tela">
+                <button class="btn-voltar" onclick="voltarMenu()">Voltar</button>
+                
+                <h2>Velho Testamento</h2>
+                <div id="vt" class="grid-botoes"></div>
+                
+                <h2>Novo Testamento</h2>
+                <div id="nt" class="grid-botoes"></div>
+            </div>
+
+            <!-- TELA 3: Capítulos -->
+            <div id="tela-capitulos" class="tela">
+                <button class="btn-voltar" onclick="mostrarTela('tela-livros')">Voltar</button>
+                <h2 id="titulo-livro"></h2>
+                <div id="grid-capitulos" class="grid-botoes"></div>
+            </div>
+
+            <!-- TELA 4: Leitura -->
             <div id="tela-leitura" class="tela">
-                <button id="btn-voltar-leitura" onclick="voltarMenu()">Voltar</button>
+                <button id="btn-voltar-leitura" class="btn-voltar" onclick="mostrarTela('tela-capitulos')">Voltar</button>
                 <h2 id="titulo-leitura"></h2>
-                <div id="texto-biblico"></div>
+                
+                <!-- O PAINEL DE LEITURA (Resolve o erro do scrollTop) -->
+                <div id="leitor-panel" class="painel-rolagem">
+                    <div id="texto-biblico"></div>
+                </div>
+                
                 <div id="botoes-navegacao-inferior"></div>
             </div>
         </main>
