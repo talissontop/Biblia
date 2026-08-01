@@ -1,10 +1,12 @@
-const CACHE_NAME = 'biblia-3d-cache-v2026-08-01_132934';
+﻿const CACHE_NAME = 'biblia-3d-cache-v20260801_141050';
 const urlsToCache = [
     './index.html',
+    './profile.css',
+    './profile.js',
     './js/core/app.js',
     './js/engine3d/scene.js',
     './manifest.json',
-    './data/verses/biblia_completa.json',
+    './data/verses/biblia_completa.json'
 ];
 
 self.addEventListener('install', event => {
@@ -25,5 +27,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    event.respondW
     event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
 });
