@@ -2,7 +2,7 @@
 // sw.js - Service Worker com Cache Otimizado para MPE
 // ============================================================
 
-const CACHE_VERSION = 'biblia-3d-cache-v20260801-174619';
+const CACHE_VERSION = 'biblia-3d-cache-v20260801-180851';
 const STATIC_CACHE = cache-static-\;
 const DYNAMIC_CACHE = cache-dynamic-\;
 const IMAGE_CACHE = cache-images-\;
