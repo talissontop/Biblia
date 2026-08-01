@@ -1,126 +1,42 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bíblia e Harpa de Estudo 3D</title>
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0f1117">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1453/1453982.png">
-    
-    <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root { --bg-dark: #0f1117; --panel-bg: rgba(22, 26, 36, 0.85); --panel-border: rgba(255, 255, 255, 0.1); --accent-gold: #d4af37; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --sidebar-width: 280px; --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { font-family: var(--font-main); background-color: var(--bg-dark); color: var(--text-primary); overflow: hidden; height: 100vh; width: 100vw; position: relative; }
-        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background-color: #0f1117; }
-        #renderCanvas { width: 100%; height: 100%; touch-action: none; outline: none; }
-        .app-header { position: absolute; top: 0; left: 0; right: 0; height: 60px; background: var(--panel-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--panel-border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 10; }
-        .menu-toggle-btn { background: transparent; border: 1px solid var(--panel-border); color: var(--accent-gold); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: all 0.2s ease; }
-        .app-title { font-size: 18px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
-        .app-title span { color: var(--accent-gold); font-size: 12px; border: 1px solid var(--accent-gold); padding: 2px 6px; border-radius: 4px; }
-        .sidebar { position: absolute; top: 60px; left: -280px; width: var(--sidebar-width); height: calc(100vh - 60px); background: var(--panel-bg); backdrop-filter: blur(16px); border-right: 1px solid var(--panel-border); z-index: 20; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
-        .sidebar.open { left: 0; }
-        .sidebar-nav { list-style: none; padding: 20px 0; }
-        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 14px 24px; color: var(--text-secondary); text-decoration: none; font-size: 15px; }
-        .nav-item a:hover, .nav-item.active a { color: var(--accent-gold); background: rgba(212, 175, 55, 0.08); border-left: 4px solid var(--accent-gold); }
-        .leitor-panel { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 900px; height: calc(100vh - 120px); background: rgba(15, 17, 23, 0.9); backdrop-filter: blur(10px); border: 1px solid var(--panel-border); border-radius: 12px; z-index: 15; padding: 30px; overflow-y: auto; transition: opacity 0.3s ease; }
-        .leitor-panel.hidden { opacity: 0; pointer-events: none; }
-        .view-hidden { display: none !important; }
-        
-        .grid-livros { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 30px; }
-        .btn-livro { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 12px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 14px; text-align: left; }
-        .btn-livro:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
-        .grid-capitulos { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; }
-        .btn-capitulo { background: #1a1f2e; border: 1px solid var(--panel-border); color: #fff; padding: 15px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        .btn-capitulo:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(212, 175, 55, 0.1); }
-        .nav-leitura { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--panel-border); }
-        .nav-leitura-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
-        .btn-nav { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-nav:hover { background: rgba(212, 175, 55, 0.15); }
-        .versiculo-box { margin-bottom: 20px; line-height: 1.8; }
-        .versiculo-texto { font-size: 18px; color: #fff; white-space: pre-line; }
-        .versiculo-texto .num { color: var(--accent-gold); font-weight: bold; margin-right: 8px; font-size: 14px; }
-        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 4px; }
-        .highlight-box { background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--accent-gold); padding: 16px; font-size: 14px; margin: 16px 0; text-align: left; }
-    </style>
+    <title>Bíblia e Jogo de Estudo 3D</title>
+    <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./profile.css">
+    <link rel="manifest" href="./manifest.json">
 </head>
 <body>
-    <div id="canvas-container"><canvas id="renderCanvas"></canvas></div>
-    
-    <header class="app-header">
-        <button class="menu-toggle-btn" id="menuToggle">☰ Menu</button>
-        <h1 class="app-title">Bíblia de Estudo <span>3D</span></h1>
-    </header>
-    
-    <aside class="sidebar" id="sidebar">
-        <ul class="sidebar-nav">
-            <li class="nav-item"><a href="#" onclick="mostrarTela('livros'); document.getElementById('sidebar').classList.remove('open')">📖 Leitor Bíblico</a></li>
-            <li class="nav-item"><a href="#" onclick="carregarHarpa(); document.getElementById('sidebar').classList.remove('open')">🎵 Harpa Cristã</a></li>
-            <li class="nav-item"><a href="#" onclick="mostrarTela('atualizacoes'); document.getElementById('sidebar').classList.remove('open')">🔄 Atualizações</a></li>
-        </ul>
-    </aside>
+    <div id="app-container">
+        <!-- Barra de Perfil Superior -->
+        <div id="profile-container"></div>
 
-    <main class="leitor-panel" id="leitor-panel">
-        <div id="tela-livros">
-            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Antigo Testamento</h2>
-            <div class="grid-livros" id="grid-vt"></div>
-            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px; margin-top: 40px;">Novo Testamento</h2>
-            <div class="grid-livros" id="grid-nt"></div>
-        </div>
-        
-        <div id="tela-capitulos" class="view-hidden">
-            <div class="nav-leitura">
-                <button class="btn-nav" onclick="mostrarTela('livros')">⬅ Voltar</button>
-                <h2 id="titulo-livro-selecionado" style="color: var(--accent-gold);"></h2>
-                <div></div>
+        <!-- Menu Principal / Navegação -->
+        <main>
+            <div id="menu-principal" class="tela ativa">
+                <div class="grid-botoes">
+                    <button class="btn-livro" onclick="abrirSeletorLivros()">Ler Bíblia</button>
+                </div>
             </div>
-            <div class="grid-capitulos" id="grid-capitulos-container"></div>
-        </div>
-        
-        <div id="tela-leitura" class="view-hidden">
-            <div class="nav-leitura">
-                <button class="btn-nav" id="btn-voltar-leitura" onclick="mostrarTela('capitulos')">⬅ Voltar</button>
-                <h2 id="titulo-leitura" style="color: var(--accent-gold);"></h2>
-                <div></div>
-            </div>
-            <div id="texto-biblico"></div>
-            <div class="nav-leitura-bottom" id="botoes-navegacao-inferior">
-                <button class="btn-nav" id="btn-prev" onclick="navegar(-1)">⬅ Anterior</button>
-                <button class="btn-nav" id="btn-next" onclick="navegar(1)">Próximo ➡</button>
-            </div>
-        </div>
 
-        <div id="tela-harpa" class="view-hidden">
-            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Harpa Cristã (Hinos)</h2>
-            <div class="grid-livros" id="grid-hinos"></div>
-        </div>
-
-        <div id="tela-atualizacoes" class="view-hidden">
-            <h2 style="color: var(--accent-gold); text-align: center; margin-bottom: 20px;">Histórico de Atualizações</h2>
-            <div class="highlight-box">
-                <strong>v2.2 - Harpa Cristã Integrada</strong><br><br>
-                - Adicionada a Harpa Cristã completa com todos os hinos.<br>
-                - Sistema de cache inteligente com versão $versaoUnica.
+            <!-- Demais telas do app -->
+            <div id="tela-leitura" class="tela">
+                <button id="btn-voltar-leitura" onclick="voltarMenu()">Voltar</button>
+                <h2 id="titulo-leitura"></h2>
+                <div id="texto-biblico"></div>
+                <div id="botoes-navegacao-inferior"></div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
-    <script src="js/engine3d/scene.js"></script>
-    <script src="js/core/app.js"></script>
-    
+    <script src="./profile.js"></script>
+    <script src="./js/core/app.js"></script>
     <script>
-        document.getElementById('menuToggle').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('open');
-        });
-        if ('Notification' in window) Notification.requestPermission();
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("./sw.js").catch(err => console.error("Erro SW:", err));
-            });
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
         }
     </script>
-    <script src="./profile.js"></script>
 </body>
 </html>
