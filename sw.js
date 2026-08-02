@@ -1,5 +1,5 @@
 // Service Worker - Bíblia 3D PWA
-var CACHE_NAME = 'biblia-3d-cache-v20260802-083606';
+var CACHE_NAME = 'biblia-3d-cache-v20260802-090517';
 var URLS_TO_CACHE = [
     './',
     './index.html',

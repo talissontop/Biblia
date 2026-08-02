@@ -11,16 +11,8 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/jpeg" href="./img/logo_mpe.jpg">
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; height: 100%; }
         body {
             background-color: #05070a;
             color: #e6edf3;
@@ -29,15 +21,10 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        /* FUNDO COM LOGO MPE - Otimizado para performance */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('./img/logo_mpe.jpg?v=1');
             background-position: center;
             background-repeat: no-repeat;
@@ -45,199 +32,69 @@
             background-attachment: fixed;
             opacity: 0.12;
             z-index: -1;
-            will-change: opacity;
             pointer-events: none;
         }
-
-        main {
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* TELA MENU COM LOGO EM DESTAQUE */
+        main { padding: 20px; text-align: center; position: relative; z-index: 1; }
+        
         #tela-menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 70vh;
-            gap: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 70vh; gap: 20px;
         }
-
-        .logo-menu-container {
-            margin-bottom: 20px;
-            animation: logoFadeIn 0.6s ease-out;
-        }
-
+        .logo-menu-container { margin-bottom: 20px; animation: logoFadeIn 0.6s ease-out; }
         @keyframes logoFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
-
         .logo-menu-container img {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid #d4af37;
+            width: 140px; height: 140px; object-fit: cover;
+            border-radius: 50%; border: 2px solid #d4af37;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            will-change: transform;
-        }
-
-        .logo-menu-container img:hover {
-            transform: scale(1.05);
             transition: transform 0.3s ease;
         }
-
+        .logo-menu-container img:hover { transform: scale(1.05); }
         h2 {
-            color: #d4af37;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 10px;
-            margin: 15px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 1.8em;
+            color: #d4af37; border-bottom: 1px solid #30363d;
+            padding-bottom: 10px; margin: 15px 0; text-transform: uppercase;
+            letter-spacing: 1px; font-size: 1.8em;
         }
-
-        .subtitulo-boas-vindas {
-            color: #c9d1d9;
-            font-size: 1.1em;
-            margin: 20px 0 30px 0;
-            font-weight: 500;
-        }
-
+        .subtitulo-boas-vindas { color: #c9d1d9; font-size: 1.1em; margin: 20px 0 30px 0; font-weight: 500; }
         .grid-botoes {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px; margin-bottom: 30px;
         }
-
         button {
             background: linear-gradient(145deg, #1f242c, #161b22);
-            color: #d4af37;
-            border: 1px solid #30363d;
-            padding: 12px 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            transition: all 0.2s ease;
-            font-size: 0.95em;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: #d4af37; border: 1px solid #30363d; padding: 12px 8px;
+            border-radius: 8px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); transition: all 0.2s ease;
+            font-size: 0.95em; min-height: 48px; display: flex;
+            align-items: center; justify-content: center;
         }
-
         button:hover {
-            background: #d4af37;
-            color: #0d1117;
-            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
-            transform: translateY(-2px);
+            background: #d4af37; color: #0d1117;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3); transform: translateY(-2px);
         }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-voltar {
-            background: #21262d;
-            color: #c9d1d9;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto 20px auto;
-            display: block;
-        }
-
-        .btn-voltar:hover {
-            background: #30363d;
-            color: #e6edf3;
-        }
-
-        .view-hidden {
-            display: none !important;
-        }
-
+        button:active { transform: translateY(0); }
+        .btn-voltar { background: #21262d; color: #c9d1d9; width: 100%; max-width: 200px; margin: 0 auto 20px auto; display: block; }
+        .btn-voltar:hover { background: #30363d; color: #e6edf3; }
+        .view-hidden { display: none !important; }
+        
         #leitor-panel {
-            background: rgba(22, 27, 34, 0.95);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #30363d;
-            max-height: 70vh;
-            overflow-y: auto;
-            text-align: left;
-            scroll-behavior: smooth;
+            background: rgba(22, 27, 34, 0.95); padding: 20px; border-radius: 10px;
+            border: 1px solid #30363d; max-height: 70vh; overflow-y: auto; text-align: left;
         }
-
-        #leitor-panel::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #leitor-panel::-webkit-scrollbar-track {
-            background: #161b22;
-        }
-
-        #leitor-panel::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 4px;
-        }
-
-        .versiculo-box {
-            margin-bottom: 12px;
-            font-size: 1.1em;
-            line-height: 1.6;
-            padding: 8px 0;
-        }
-
-        .num {
-            color: #d4af37;
-            font-weight: bold;
-            margin-right: 8px;
-            font-size: 0.9em;
-            display: inline-block;
-            min-width: 24px;
-        }
-
-        #botoes-navegacao-inferior {
-            display: none;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
+        #leitor-panel::-webkit-scrollbar { width: 8px; }
+        #leitor-panel::-webkit-scrollbar-track { background: #161b22; }
+        #leitor-panel::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+        .versiculo-box { margin-bottom: 12px; font-size: 1.1em; line-height: 1.6; padding: 8px 0; }
+        .num { color: #d4af37; font-weight: bold; margin-right: 8px; font-size: 0.9em; min-width: 24px; display: inline-block; }
+        #botoes-navegacao-inferior { display: none; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        
         @media (max-width: 768px) {
-            h2 {
-                font-size: 1.4em;
-            }
-
-            .logo-menu-container img {
-                width: 100px;
-                height: 100px;
-            }
-
-            .grid-botoes {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-
-            #leitor-panel {
-                max-height: 60vh;
-                font-size: 0.95em;
-            }
+            h2 { font-size: 1.4em; }
+            .logo-menu-container img { width: 100px; height: 100px; }
+            .grid-botoes { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            #leitor-panel { max-height: 60vh; font-size: 0.95em; }
         }
     </style>
 </head>
@@ -252,7 +109,6 @@
             </div>
             <h2>Ministério Pentecostal Elohim</h2>
             <p class="subtitulo-boas-vindas">Bem-vindo à Bíblia Sagrada</p>
-
             <div class="grid-botoes" style="grid-template-columns: 1fr; max-width: 250px; margin: 0 auto;">
                 <button style="padding: 18px; font-size: 1.2em;" onclick="abrirBiblia()" aria-label="Abrir leitor de Bíblia">
                     📖 Ler Bíblia
@@ -262,9 +118,7 @@
 
         <!-- LIVROS -->
         <div id="tela-livros" class="view-hidden">
-            <button class="btn-voltar" onclick="voltarParaMenu()" aria-label="Voltar ao menu principal">
-                ⬅ Voltar ao Menu
-            </button>
+            <button class="btn-voltar" onclick="voltarParaMenu()" aria-label="Voltar ao menu principal">⬅ Voltar ao Menu</button>
             <h2>Velho Testamento</h2>
             <div id="grid-vt" class="grid-botoes"></div>
             <h2>Novo Testamento</h2>
@@ -273,406 +127,66 @@
 
         <!-- CAPÍTULOS -->
         <div id="tela-capitulos" class="view-hidden">
-            <button class="btn-voltar" onclick="mostrarTela('livros')" aria-label="Voltar à lista de livros">
-                ⬅ Voltar aos Livros
-            </button>
+            <button class="btn-voltar" onclick="mostrarTela('livros')" aria-label="Voltar à lista de livros">⬅ Voltar aos Livros</button>
             <h2 id="titulo-livro-selecionado"></h2>
             <div id="grid-capitulos-container" class="grid-botoes"></div>
         </div>
 
         <!-- LEITURA -->
         <div id="tela-leitura" class="view-hidden">
-            <button id="btn-voltar-leitura" class="btn-voltar" aria-label="Voltar ao índice de capítulos">
-                ⬅ Voltar
-            </button>
+            <button id="btn-voltar-leitura" class="btn-voltar" aria-label="Voltar ao índice de capítulos">⬅ Voltar</button>
             <h2 id="titulo-leitura"></h2>
             <div id="leitor-panel">
                 <div id="texto-biblico"></div>
             </div>
             <div id="botoes-navegacao-inferior">
-                <button id="btn-prev" onclick="navegar(-1)" aria-label="Capítulo anterior">
-                    ⬅ Anterior
-                </button>
-                <button id="btn-next" onclick="navegar(1)" aria-label="Próximo capítulo">
-                    Próximo ➡
-                </button>
+                <button id="btn-prev" onclick="navegar(-1)" aria-label="Capítulo anterior">⬅ Anterior</button>
+                <button id="btn-next" onclick="navegar(1)" aria-label="Próximo capítulo">Próximo ➡</button>
             </div>
         </div>
 
-        <!-- PLACEHOLDERS PARA FUTURAS TELAS -->
+        <!-- PLACEHOLDERS FUTUROS -->
         <div id="tela-harpa" class="view-hidden"></div>
         <div id="tela-atualizacoes" class="view-hidden"></div>
         <div id="tela-perfil" class="view-hidden"></div>
     </main>
 
-    <script src="./profile.js">
-                // ============================================================
-        // Sistema EXTREMAMENTE ROBUSTO de Auto-Atualização
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            (function initServiceWorkerWithAutoUpdate() {
-                try {
-                    var swRegistration = null;
-                    
-                    navigator.serviceWorker.register('./sw.js', { scope: './' })
-                        .then(function(reg) {
-                            console.log('[SW] Registrado com sucesso', 'Escopo:', reg.scope);
-                            swRegistration = reg;
-                            
-                            // Verifica updates a cada 30 segundos
-                            setInterval(function() {
-                                try {
-                                    reg.update();
-                                } catch (err) {
-                                    console.warn('[SW] Erro ao verificar updates:', err.message);
-                                }
-                            }, 30000);
-                            
-                            // Listener para detectar nova versão instalada
-                            reg.addEventListener('updatefound', function() {
-                                var newWorker = reg.installing;
-                                console.log('[SW] Nova versão detectada (installing)');
-                                
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed') {
-                                        // Se já há um SW ativo, há uma update
-                                        if (navigator.serviceWorker.controller) {
-                                            console.log('[SW] UPDATE DISPONÍVEL - Limpando cache...');
-                                            ativarAutoUpdateComLimpeza();
-                                        } else {
-                                            console.log('[SW] Primeira instalação concluída');
-                                        }
-                                    }
-                                });
-                            });
-                            
-                        })
-                        .catch(function(err) {
-                            console.error('[SW] ERRO ao registrar Service Worker:', err.message, err.stack);
-                        });
-                    
-                    // Função que limpa cache e recarrega
-                    function ativarAutoUpdateComLimpeza() {
-                        try {
-                            console.log('[Cache] Iniciando limpeza de caches antigos...');
-                            
-                            caches.keys()
-                                .then(function(cacheNames) {
-                                    console.log('[Cache] Caches encontrados:', cacheNames.length);
-                                    
-                                    return Promise.all(
-                                        cacheNames.map(function(cacheName) {
-                                            console.log('[Cache] Deletando:', cacheName);
-                                            return caches.delete(cacheName)
-                                                .then(function(deleted) {
-                                                    if (deleted) {
-                                                        console.log('[Cache] ✓ Deletado:', cacheName);
-                                                    }
-                                                });
-                                        })
-                                    );
-                                })
-                                .then(function() {
-                                    console.log('[Cache] ✓ TODOS os caches foram limpos!');
-                                    console.log('[App] Recarregando página com nova versão...');
-                                    
-                                    // Mostra notificação visual
-                                    mostrarNotificacaoUpdate();
-                                    
-                                    // Aguarda 2 segundos e recarrega
-                                    setTimeout(function() {
-                                        window.location.reload(true);
-                                    }, 2000);
-                                })
-                                .catch(function(err) {
-                                    console.error('[Cache] Erro ao limpar:', err.message);
-                                });
-                        } catch (err) {
-                            console.error('[Update] Erro durante auto-update:', err.message);
-                        }
-                    }
-                    
-                    // Notificação visual para o usuário
-                    function mostrarNotificacaoUpdate() {
-                        try {
-                            var notif = document.createElement('div');
-                            notif.id = 'notif-update-app';
-                            notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:system-ui;';
-                            notif.innerHTML = '<strong>🔄 Atualização disponível!</strong><br>Recarregando em 2 segundos...';
-                            document.body.appendChild(notif);
-                            
-                            setTimeout(function() {
-                                notif.remove();
-                            }, 3000);
-                        } catch (err) {
-                            console.warn('[Notif] Erro ao mostrar notificação:', err.message);
-                        }
-                    }
-                    
-                } catch (err) {
-                    console.error('[Init] Erro na inicialização do SW:', err.message, err.stack);
-                }
-            })();
-        } else {
-            console.warn('[SW] Service Worker não suportado neste navegador');
-        }
-</script>
-    <script src="./js/core/app.js">
-                // ============================================================
-        // Sistema EXTREMAMENTE ROBUSTO de Auto-Atualização
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            (function initServiceWorkerWithAutoUpdate() {
-                try {
-                    var swRegistration = null;
-                    
-                    navigator.serviceWorker.register('./sw.js', { scope: './' })
-                        .then(function(reg) {
-                            console.log('[SW] Registrado com sucesso', 'Escopo:', reg.scope);
-                            swRegistration = reg;
-                            
-                            // Verifica updates a cada 30 segundos
-                            setInterval(function() {
-                                try {
-                                    reg.update();
-                                } catch (err) {
-                                    console.warn('[SW] Erro ao verificar updates:', err.message);
-                                }
-                            }, 30000);
-                            
-                            // Listener para detectar nova versão instalada
-                            reg.addEventListener('updatefound', function() {
-                                var newWorker = reg.installing;
-                                console.log('[SW] Nova versão detectada (installing)');
-                                
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed') {
-                                        // Se já há um SW ativo, há uma update
-                                        if (navigator.serviceWorker.controller) {
-                                            console.log('[SW] UPDATE DISPONÍVEL - Limpando cache...');
-                                            ativarAutoUpdateComLimpeza();
-                                        } else {
-                                            console.log('[SW] Primeira instalação concluída');
-                                        }
-                                    }
-                                });
-                            });
-                            
-                        })
-                        .catch(function(err) {
-                            console.error('[SW] ERRO ao registrar Service Worker:', err.message, err.stack);
-                        });
-                    
-                    // Função que limpa cache e recarrega
-                    function ativarAutoUpdateComLimpeza() {
-                        try {
-                            console.log('[Cache] Iniciando limpeza de caches antigos...');
-                            
-                            caches.keys()
-                                .then(function(cacheNames) {
-                                    console.log('[Cache] Caches encontrados:', cacheNames.length);
-                                    
-                                    return Promise.all(
-                                        cacheNames.map(function(cacheName) {
-                                            console.log('[Cache] Deletando:', cacheName);
-                                            return caches.delete(cacheName)
-                                                .then(function(deleted) {
-                                                    if (deleted) {
-                                                        console.log('[Cache] ✓ Deletado:', cacheName);
-                                                    }
-                                                });
-                                        })
-                                    );
-                                })
-                                .then(function() {
-                                    console.log('[Cache] ✓ TODOS os caches foram limpos!');
-                                    console.log('[App] Recarregando página com nova versão...');
-                                    
-                                    // Mostra notificação visual
-                                    mostrarNotificacaoUpdate();
-                                    
-                                    // Aguarda 2 segundos e recarrega
-                                    setTimeout(function() {
-                                        window.location.reload(true);
-                                    }, 2000);
-                                })
-                                .catch(function(err) {
-                                    console.error('[Cache] Erro ao limpar:', err.message);
-                                });
-                        } catch (err) {
-                            console.error('[Update] Erro durante auto-update:', err.message);
-                        }
-                    }
-                    
-                    // Notificação visual para o usuário
-                    function mostrarNotificacaoUpdate() {
-                        try {
-                            var notif = document.createElement('div');
-                            notif.id = 'notif-update-app';
-                            notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:system-ui;';
-                            notif.innerHTML = '<strong>🔄 Atualização disponível!</strong><br>Recarregando em 2 segundos...';
-                            document.body.appendChild(notif);
-                            
-                            setTimeout(function() {
-                                notif.remove();
-                            }, 3000);
-                        } catch (err) {
-                            console.warn('[Notif] Erro ao mostrar notificação:', err.message);
-                        }
-                    }
-                    
-                } catch (err) {
-                    console.error('[Init] Erro na inicialização do SW:', err.message, err.stack);
-                }
-            })();
-        } else {
-            console.warn('[SW] Service Worker não suportado neste navegador');
-        }
-</script>
-    <script>
-        // Registra Service Worker com fallback
-        .catch(err => {
-                console.warn('[App] Erro ao registrar SW:', err);
-            });
-        }
+    <!-- ARQUIVOS JS EXTERNOS (Têm que estar vazios por dentro) -->
+    <script src="./profile.js"></script>
+    <script src="./js/core/app.js"></script>
 
-        function abrirBiblia() {
+    <!-- CONTROLES DA UI E BÍBLIA -->
+    <script>
+        window.abrirBiblia = function() {
             try {
-                document.getElementById('tela-menu').classList.add('view-hidden');
-                document.getElementById('tela-livros').classList.remove('view-hidden');
+                if (typeof mostrarTela === 'function') {
+                    mostrarTela('livros');
+                } else {
+                    document.getElementById('tela-menu').classList.add('view-hidden');
+                    document.getElementById('tela-livros').classList.remove('view-hidden');
+                }
             } catch (err) {
                 console.error('[App] Erro ao abrir Bíblia:', err);
             }
-        }
+        };
 
-        function voltarParaMenu() {
+        window.voltarParaMenu = function() {
             try {
                 document.getElementById('tela-livros').classList.add('view-hidden');
                 document.getElementById('tela-menu').classList.remove('view-hidden');
             } catch (err) {
                 console.error('[App] Erro ao voltar ao menu:', err);
             }
-        }
-    
-                // ============================================================
-        // Sistema EXTREMAMENTE ROBUSTO de Auto-Atualização
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            (function initServiceWorkerWithAutoUpdate() {
-                try {
-                    var swRegistration = null;
-                    
-                    navigator.serviceWorker.register('./sw.js', { scope: './' })
-                        .then(function(reg) {
-                            console.log('[SW] Registrado com sucesso', 'Escopo:', reg.scope);
-                            swRegistration = reg;
-                            
-                            // Verifica updates a cada 30 segundos
-                            setInterval(function() {
-                                try {
-                                    reg.update();
-                                } catch (err) {
-                                    console.warn('[SW] Erro ao verificar updates:', err.message);
-                                }
-                            }, 30000);
-                            
-                            // Listener para detectar nova versão instalada
-                            reg.addEventListener('updatefound', function() {
-                                var newWorker = reg.installing;
-                                console.log('[SW] Nova versão detectada (installing)');
-                                
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed') {
-                                        // Se já há um SW ativo, há uma update
-                                        if (navigator.serviceWorker.controller) {
-                                            console.log('[SW] UPDATE DISPONÍVEL - Limpando cache...');
-                                            ativarAutoUpdateComLimpeza();
-                                        } else {
-                                            console.log('[SW] Primeira instalação concluída');
-                                        }
-                                    }
-                                });
-                            });
-                            
-                        })
-                        .catch(function(err) {
-                            console.error('[SW] ERRO ao registrar Service Worker:', err.message, err.stack);
-                        });
-                    
-                    // Função que limpa cache e recarrega
-                    function ativarAutoUpdateComLimpeza() {
-                        try {
-                            console.log('[Cache] Iniciando limpeza de caches antigos...');
-                            
-                            caches.keys()
-                                .then(function(cacheNames) {
-                                    console.log('[Cache] Caches encontrados:', cacheNames.length);
-                                    
-                                    return Promise.all(
-                                        cacheNames.map(function(cacheName) {
-                                            console.log('[Cache] Deletando:', cacheName);
-                                            return caches.delete(cacheName)
-                                                .then(function(deleted) {
-                                                    if (deleted) {
-                                                        console.log('[Cache] ✓ Deletado:', cacheName);
-                                                    }
-                                                });
-                                        })
-                                    );
-                                })
-                                .then(function() {
-                                    console.log('[Cache] ✓ TODOS os caches foram limpos!');
-                                    console.log('[App] Recarregando página com nova versão...');
-                                    
-                                    // Mostra notificação visual
-                                    mostrarNotificacaoUpdate();
-                                    
-                                    // Aguarda 2 segundos e recarrega
-                                    setTimeout(function() {
-                                        window.location.reload(true);
-                                    }, 2000);
-                                })
-                                .catch(function(err) {
-                                    console.error('[Cache] Erro ao limpar:', err.message);
-                                });
-                        } catch (err) {
-                            console.error('[Update] Erro durante auto-update:', err.message);
-                        }
-                    }
-                    
-                    // Notificação visual para o usuário
-                    function mostrarNotificacaoUpdate() {
-                        try {
-                            var notif = document.createElement('div');
-                            notif.id = 'notif-update-app';
-                            notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:system-ui;';
-                            notif.innerHTML = '<strong>🔄 Atualização disponível!</strong><br>Recarregando em 2 segundos...';
-                            document.body.appendChild(notif);
-                            
-                            setTimeout(function() {
-                                notif.remove();
-                            }, 3000);
-                        } catch (err) {
-                            console.warn('[Notif] Erro ao mostrar notificação:', err.message);
-                        }
-                    }
-                    
-                } catch (err) {
-                    console.error('[Init] Erro na inicialização do SW:', err.message, err.stack);
-                }
-            })();
-        } else {
-            console.warn('[SW] Service Worker não suportado neste navegador');
-        }
-</script>
-    <!-- SCRIPT DE INSTALAÇÃO PWA AUTOMÁTICO -->
+        };
+    </script>
+
+    <!-- SISTEMA PWA: INSTALAÇÃO E AUTO-ATUALIZAÇÃO -->
     <script>
+        // 1. Banner de Instalação Automática
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            
-            // Exibe um aviso elegante após 3 segundos para o usuário instalar o app
             setTimeout(() => {
                 let banner = document.getElementById('pwa-install-banner');
                 if (!banner && !window.matchMedia('(display-mode: standalone)').matches) {
@@ -686,125 +200,45 @@
                         banner.style.display = 'none';
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
-                        if (outcome === 'accepted') {
-                            console.log('Usuário aceitou instalar o PWA');
-                        }
                         deferredPrompt = null;
                     });
                 }
             }, 3000);
         });
-    
-                // ============================================================
-        // Sistema EXTREMAMENTE ROBUSTO de Auto-Atualização
-        // ============================================================
+
+        // 2. Service Worker e Limpeza de Cache Extrema
         if ('serviceWorker' in navigator) {
-            (function initServiceWorkerWithAutoUpdate() {
-                try {
-                    var swRegistration = null;
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then(function(reg) {
+                    console.log('[SW] Registrado com sucesso, Escopo:', reg.scope);
                     
-                    navigator.serviceWorker.register('./sw.js', { scope: './' })
-                        .then(function(reg) {
-                            console.log('[SW] Registrado com sucesso', 'Escopo:', reg.scope);
-                            swRegistration = reg;
-                            
-                            // Verifica updates a cada 30 segundos
-                            setInterval(function() {
-                                try {
-                                    reg.update();
-                                } catch (err) {
-                                    console.warn('[SW] Erro ao verificar updates:', err.message);
-                                }
-                            }, 30000);
-                            
-                            // Listener para detectar nova versão instalada
-                            reg.addEventListener('updatefound', function() {
-                                var newWorker = reg.installing;
-                                console.log('[SW] Nova versão detectada (installing)');
-                                
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed') {
-                                        // Se já há um SW ativo, há uma update
-                                        if (navigator.serviceWorker.controller) {
-                                            console.log('[SW] UPDATE DISPONÍVEL - Limpando cache...');
-                                            ativarAutoUpdateComLimpeza();
-                                        } else {
-                                            console.log('[SW] Primeira instalação concluída');
-                                        }
-                                    }
+                    // Checa atualizações a cada 30 segundos
+                    setInterval(() => { try { reg.update(); } catch(e){} }, 30000);
+
+                    reg.addEventListener('updatefound', function() {
+                        var newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('[SW] Atualização encontrada. Limpando cache antigo...');
+                                caches.keys().then(function(cacheNames) {
+                                    return Promise.all(cacheNames.map(function(cacheName) {
+                                        return caches.delete(cacheName);
+                                    }));
+                                }).then(function() {
+                                    var notif = document.createElement('div');
+                                    notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:sans-serif;';
+                                    notif.innerHTML = '<strong>🔄 Atualização aplicada!</strong><br>O aplicativo foi atualizado para a versão mais recente.';
+                                    document.body.appendChild(notif);
+                                    setTimeout(() => { window.location.reload(true); }, 2000);
                                 });
-                            });
-                            
-                        })
-                        .catch(function(err) {
-                            console.error('[SW] ERRO ao registrar Service Worker:', err.message, err.stack);
+                            }
                         });
-                    
-                    // Função que limpa cache e recarrega
-                    function ativarAutoUpdateComLimpeza() {
-                        try {
-                            console.log('[Cache] Iniciando limpeza de caches antigos...');
-                            
-                            caches.keys()
-                                .then(function(cacheNames) {
-                                    console.log('[Cache] Caches encontrados:', cacheNames.length);
-                                    
-                                    return Promise.all(
-                                        cacheNames.map(function(cacheName) {
-                                            console.log('[Cache] Deletando:', cacheName);
-                                            return caches.delete(cacheName)
-                                                .then(function(deleted) {
-                                                    if (deleted) {
-                                                        console.log('[Cache] ✓ Deletado:', cacheName);
-                                                    }
-                                                });
-                                        })
-                                    );
-                                })
-                                .then(function() {
-                                    console.log('[Cache] ✓ TODOS os caches foram limpos!');
-                                    console.log('[App] Recarregando página com nova versão...');
-                                    
-                                    // Mostra notificação visual
-                                    mostrarNotificacaoUpdate();
-                                    
-                                    // Aguarda 2 segundos e recarrega
-                                    setTimeout(function() {
-                                        window.location.reload(true);
-                                    }, 2000);
-                                })
-                                .catch(function(err) {
-                                    console.error('[Cache] Erro ao limpar:', err.message);
-                                });
-                        } catch (err) {
-                            console.error('[Update] Erro durante auto-update:', err.message);
-                        }
-                    }
-                    
-                    // Notificação visual para o usuário
-                    function mostrarNotificacaoUpdate() {
-                        try {
-                            var notif = document.createElement('div');
-                            notif.id = 'notif-update-app';
-                            notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:system-ui;';
-                            notif.innerHTML = '<strong>🔄 Atualização disponível!</strong><br>Recarregando em 2 segundos...';
-                            document.body.appendChild(notif);
-                            
-                            setTimeout(function() {
-                                notif.remove();
-                            }, 3000);
-                        } catch (err) {
-                            console.warn('[Notif] Erro ao mostrar notificação:', err.message);
-                        }
-                    }
-                    
-                } catch (err) {
-                    console.error('[Init] Erro na inicialização do SW:', err.message, err.stack);
-                }
-            })();
-        } else {
-            console.warn('[SW] Service Worker não suportado neste navegador');
+                    });
+                })
+                .catch(function(err) {
+                    console.warn('[SW] Erro ao registrar:', err);
+                });
         }
-</script>
-</body>
+    </script>
+</body> 
 </html>
