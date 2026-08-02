@@ -97,6 +97,18 @@
             #leitor-panel { max-height: 60vh; font-size: 0.95em; }
         }
     </style>
+    <!-- ANIMACAO_CARDS_ESTUDOS_V2 -->
+    <style>
+        .card-estudo {
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease !important;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .card-estudo:active {
+            transform: scale(0.94) !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.8) !important; opacity: 0.9;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
     <div id="profile-container"></div>
@@ -149,7 +161,68 @@
         <div id="tela-harpa" class="view-hidden"></div>
         <div id="tela-atualizacoes" class="view-hidden"></div>
         <div id="tela-perfil" class="view-hidden"></div>
-    </main>
+    
+    <!-- ========================================== -->
+    <!-- CARDS DE ESTUDOS TEMÁTICOS                -->
+    <!-- ========================================== -->
+    <div id="cards-estudos" style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; max-width: 280px; margin-left: auto; margin-right: auto;">
+        <!-- Card: ✨ Angelologia (Estudo dos Anjos) -->
+        <div id="btn-angelologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">✨ Angelologia (Estudo dos Anjos)</span>
+        </div>
+        <!-- Card: 🕯️ Escatologia (Estudo dos Últimos Tempos) -->
+        <div id="btn-escatologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🕯️ Escatologia (Estudo dos Últimos Tempos)</span>
+        </div>
+        <!-- Card: ⛪ Soteriologia (Estudo da Salvação) -->
+        <div id="btn-soteriologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">⛪ Soteriologia (Estudo da Salvação)</span>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TELAS DE CONTEÚDO DOS ESTUDOS            -->
+    <!-- ========================================== -->
+    <!-- Tela: angelologia -->
+    <div id="tela-angelologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-angelologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">✨ Angelologia (Estudo dos Anjos)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que são os Anjos?</strong> Os anjos são seres espirituais criados por Deus, dotados de inteligência, vontade e personalidade, cuja principal missão é adorar a Deus e servir como mensageiros e executores de Sua vontade na Terra.</p>
+<p><strong>Natureza:</strong> Eles são espíritos ministeriais (Hebreus 1:14). Não possuem corpos físicos como os humanos, mas podem assumir formas visíveis quando Deus permite.</p>
+<p><strong>Hierarquia e Atuação:</strong> A Bíblia menciona diferentes ordens e seres celestiais, como os Querubins, Serafins e Arcanjos (como Miguel e Gabriel), que protegem o povo de Deus e executam juízos divinos.</p>
+<p><strong>Principais Funções:</strong> Louvor a Deus, mensagens divinas, proteção dos crentes, execução de juízos e guerra espiritual contra as forças do mal.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Tela: escatologia -->
+    <div id="tela-escatologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-escatologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🕯️ Escatologia (Estudo dos Últimos Tempos)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que é Escatologia?</strong> Escatologia é o ramo da teologia que estuda os eventos finais e a consumação dos tempos conforme revelados na Bíblia.</p>
+<p><strong>Temas Principais:</strong> Segunda vinda de Cristo, Juízo Final, Reino de Deus, Ressurreição dos mortos e Nova Jerusalém.</p>
+<p><strong>Esperança Cristã:</strong> A Escatologia não é apenas sobre julgamento, mas principalmente sobre a esperança e vitória final de Cristo e Sua Igreja.</p>
+<p><strong>Relevância Prática:</strong> Compreender os últimos tempos nos encoraja a viver com santidade, vigilância e fé, esperando pelo retorno de Jesus.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Tela: soteriologia -->
+    <div id="tela-soteriologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-soteriologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">⛪ Soteriologia (Estudo da Salvação)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que é Soteriologia?</strong> Soteriologia é a doutrina que explica como a salvação é oferecida e realizada através de Jesus Cristo.</p>
+<p><strong>Fundamento:</strong> Todos pecaram e destituídos estão da glória de Deus (Romanos 3:23). A salvação é oferecida gratuitamente pela graça de Deus.</p>
+<p><strong>Processo da Salvação:</strong> Envolve arrependimento, fé em Cristo, justificação, regeneração e santificação contínua.</p>
+<p><strong>Segurança Eterna:</strong> Aquele que crê em Cristo recebe vida eterna e é selado pelo Espírito Santo, tendo certeza de sua salvação em Deus.</p>
+            </div>
+        </div>
+    </div>
+</main>
 
     <!-- ARQUIVOS JS EXTERNOS (Têm que estar vazios por dentro) -->
     <script src="./profile.js"></script>

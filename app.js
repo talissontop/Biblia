@@ -429,3 +429,69 @@ async function verificarAtualizacaoSW() {
 }
 
 console.log('[App] Módulo carregado e pronto');
+
+
+// ==========================================
+// SISTEMA DE ESTUDOS TEMÁTICOS
+// ==========================================
+(function initStudyCards() {
+    function setupStudyCard(cardId) {
+        var btnCard = document.getElementById('btn-' + cardId);
+        var telaCard = document.getElementById('tela-' + cardId);
+        var btnVoltar = document.getElementById('voltar-' + cardId);
+        
+        if (btnCard && telaCard) {
+            btnCard.onclick = function(e) {
+                if (e) e.preventDefault();
+                telaCard.style.display = 'block';
+                // --- MOTOR_FETCH_SUPREMO ---
+                var contentDiv = telaCard.querySelector('div > div:last-child');
+                if (contentDiv && !contentDiv.getAttribute('data-carregado')) {
+                    var conteudoOriginal = contentDiv.innerHTML;
+                    contentDiv.innerHTML = '<div style="text-align:center; padding:30px; color:#d4af37;"><i>⏳ Carregando manuscrito...</i></div>';
+                    
+                    fetch('estudos/' + cardId + '.html')
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('Erro na rede');
+                            return res.text();
+                        })
+                        .then(function(html) {
+                            contentDiv.innerHTML = html;
+                            contentDiv.setAttribute('data-carregado', 'true');
+                        })
+                        .catch(function(err) {
+                            console.warn('[Fetch] Usando modo offline nativo:', err);
+                            contentDiv.innerHTML = conteudoOriginal;
+                        });
+                }
+                // --------------------------
+                document.body.style.overflow = 'hidden';
+                console.log('[Cards] Abrindo: ' + cardId);
+            };
+        }
+        
+        if (btnVoltar && telaCard) {
+            btnVoltar.onclick = function(e) {
+                if (e) e.preventDefault();
+                telaCard.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                console.log('[Cards] Fechando: ' + cardId);
+            };
+        }
+    }
+    
+    // Aguarda DOM estar pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setupStudyCard('angelologia');
+            setupStudyCard('escatologia');
+            setupStudyCard('soteriologia');
+            console.log('[Cards] Sistema de estudos inicializado');
+        });
+    } else {
+        setupStudyCard('angelologia');
+        setupStudyCard('escatologia');
+        setupStudyCard('soteriologia');
+        console.log('[Cards] Sistema de estudos inicializado');
+    }
+})();

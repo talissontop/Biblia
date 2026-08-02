@@ -1,6 +1,9 @@
 // Service Worker - Bíblia 3D PWA
-var CACHE_NAME = 'biblia-3d-cache-v20260802-090517';
+var CACHE_NAME = 'biblia-3d-cache-v20260802-110150';
 var URLS_TO_CACHE = [
+    './estudos/angelologia.html',
+    './estudos/escatologia.html',
+    './estudos/soteriologia.html',
     './',
     './index.html',
     './app.js',
