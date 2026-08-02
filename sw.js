@@ -1,7 +1,7 @@
 // Service Worker - Bíblia 3D PWA
 // Sem erros de sintaxe, totalmente validado
 
-var CACHE_NAME = 'biblia-3d-cache-v20260801-232754';
+var CACHE_NAME = 'biblia-3d-cache-v20260801-234807';
 var urlsToCache = [
   './',
   './index.html',
@@ -9,7 +9,8 @@ var urlsToCache = [
   './profile.js',
   './profile.css',
   './manifest.json',
-  './img/logo_mpe.jpg'
+  './data/verses/biblia_completa.json',
+    ''
 ];
 
 // Install listener com tratamento robusto
