@@ -1,23 +1,43 @@
-﻿{
-  "name": "Bíblia de Estudo 3D",
-  "short_name": "Bíblia 3D",
-  "description": "Estudo profundo da Bíblia nos idiomas originais em ambiente 3D.",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0f1117",
-  "theme_color": "#0f1117",
-  "icons": [
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/1453/1453982.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/1453/1453982.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+{
+    "screenshots":  [
+                        {
+                            "form_factor":  "narrow",
+                            "type":  "image/jpeg",
+                            "sizes":  "192x192",
+                            "src":  "./img/logo_mpe.jpg"
+                        },
+                        {
+                            "form_factor":  "wide",
+                            "type":  "image/jpeg",
+                            "sizes":  "512x512",
+                            "src":  "./img/logo_mpe.jpg"
+                        }
+                    ],
+    "description":  "Leitor de Bíblia digital com suporte offline",
+    "short_name":  "Bíblia MPE",
+    "background_color":  "#05070a",
+    "icons":  [
+                  {
+                      "purpose":  "any maskable",
+                      "type":  "image/jpeg",
+                      "sizes":  "192x192",
+                      "src":  "./img/logo_mpe.jpg"
+                  },
+                  {
+                      "purpose":  "any maskable",
+                      "type":  "image/jpeg",
+                      "sizes":  "512x512",
+                      "src":  "./img/logo_mpe.jpg"
+                  }
+              ],
+    "orientation":  "portrait",
+    "theme_color":  "#d4af37",
+    "display":  "standalone",
+    "name":  "Bíblia 3D - Ministério Pentecostal Elohim",
+    "categories":  [
+                       "productivity",
+                       "lifestyle"
+                   ],
+    "scope":  "./",
+    "start_url":  "./index.html"
 }
