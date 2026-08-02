@@ -1,0 +1,157 @@
+// ==========================================
+// MOTOR DE ESTUDOS - DEFINITIVO V3
+// ==========================================
+(function() {
+    if (window.sistemaEstudosAtivo) return;
+    window.sistemaEstudosAtivo = true;
+
+    document.addEventListener('click', function(event) {
+        var card = event.target.closest('.card-estudo');
+        if (card) {
+            event.preventDefault();
+            var idCard = card.id; // ex: btn-angelologia
+            var tema = idCard.replace('btn-', '');
+            var tela = document.getElementById('tela-' + tema);
+            
+            console.log('[Estudos] Tentando abrir:', tema, tela);
+            
+            if (tela) {
+                tela.style.display = 'block';
+                tela.classList.add('tela-estudo-ativo');
+                document.body.style.overflow = 'hidden';
+                
+                var caixa = tela.querySelector('.conteudo-estudo') || tela.querySelector('div > div:last-child');
+                if (caixa && !caixa.getAttribute('data-carregado')) {
+                    caixa.innerHTML = '<div style="text-align:center; padding:40px; color:#d4af37;">⏳ Carregando manuscrito...</div>';
+                    
+                    fetch('estudos/' + tema + '.html')
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('Erro HTTP: ' + res.status);
+                            return res.text();
+                        })
+                        .then(function(htmlText) {
+                            caixa.innerHTML = htmlText;
+                            caixa.setAttribute('data-carregado', 'true');
+                            console.log('[Estudos] Sucesso ao carregar:', tema);
+                        })
+                        .catch(function(err) {
+                            console.warn('[Estudos] Erro no fetch:', err);
+                            caixa.innerHTML = '<div style="color:#ff6b6b; padding:20px;">Erro ao carregar o arquivo de estudo. Verifique se o arquivo /estudos/' + tema + '.html existe.</div>';
+                        });
+                }
+            } else {
+                console.error('[Estudos] ERRO: Tela não encontrada para ID: tela-' + tema);
+                alert('Aviso: Tela de estudo não encontrada.');
+            }
+        }
+        
+        var btnVoltar = event.target.closest('.btn-voltar-estudo');
+        if (btnVoltar) {
+            event.preventDefault();
+            var idVoltar = btnVoltar.id; // ex: voltar-angelologia
+            var temaVoltar = idVoltar.replace('voltar-', '');
+            var telaVoltar = document.getElementById('tela-' + temaVoltar);
+            
+            if (telaVoltar) {
+                telaVoltar.style.display = 'none';
+                telaVoltar.classList.remove('tela-estudo-ativo');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
+    console.log('[Estudos] Motor definitivo inicializado com sucesso.');
+})();
+
+// ==========================================
+// MOTOR DE ESTUDOS - VERSÃO DEFINITIVA V5
+// Corrige: !important CSS, guard flag morto,
+// stopPropagation de terceiros, motores duplicados.
+// ==========================================
+(function() {
+    if (document.documentElement.dataset.motorEstudosV5 === '1') {
+        console.log('[Estudos V5] Já ativo, ignorando reinicialização duplicada.');
+        return;
+    }
+    document.documentElement.dataset.motorEstudosV5 = '1';
+
+    function forcarAbertura(tela) {
+        tela.style.setProperty('display', 'block', 'important');
+        tela.style.setProperty('z-index', '999999', 'important');
+        tela.style.setProperty('pointer-events', 'auto', 'important');
+        tela.style.setProperty('visibility', 'visible', 'important');
+        tela.style.setProperty('opacity', '1', 'important');
+        tela.classList.add('tela-estudo-ativo');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function forcarFechamento(tela) {
+        tela.style.setProperty('display', 'none', 'important');
+        tela.classList.remove('tela-estudo-ativo');
+        document.body.style.overflow = 'auto';
+    }
+
+    function carregarConteudo(caixa, tema) {
+        caixa.innerHTML = '<div style="text-align:center; padding:40px; color:#d4af37;"><i>Carregando estudo de ' + tema + '...</i></div>';
+
+        var caminho1 = 'estudos/' + tema + '.html';
+        var caminho2 = './estudos/' + tema + '.html';
+
+        fetch(caminho1, { cache: 'no-store' })
+            .then(function(res) {
+                if (!res.ok) { return fetch(caminho2, { cache: 'no-store' }); }
+                return res;
+            })
+            .then(function(res) {
+                if (!res.ok) throw new Error('HTTP ' + res.status + ' ao buscar estudos/' + tema + '.html');
+                return res.text();
+            })
+            .then(function(htmlText) {
+                caixa.innerHTML = htmlText;
+                console.log('[Estudos V5] Conteudo injetado com sucesso:', tema);
+            })
+            .catch(function(err) {
+                console.error('[Estudos V5] Erro ao carregar conteudo:', err);
+                caixa.innerHTML = '<div style="background: rgba(255,107,107,0.1); border: 1px solid #ff6b6b; padding: 20px; border-radius: 8px; color: #ff6b6b;">' +
+                    '<h3>Falha ao carregar o estudo</h3>' +
+                    '<p><strong>Tema:</strong> ' + tema + '</p>' +
+                    '<p><strong>Detalhe:</strong> ' + err.message + '</p>' +
+                    '</div>';
+            });
+    }
+
+    document.addEventListener('click', function(e) {
+        var card = e.target.closest('.card-estudo');
+        if (card) {
+            console.log('[Estudos V5] Card clicado:', card.id);
+            var tema = card.id.replace('btn-', '');
+            var tela = document.getElementById('tela-' + tema);
+
+            if (!tela) {
+                console.error('[Estudos V5] ERRO: elemento #tela-' + tema + ' não existe no DOM.');
+                return;
+            }
+
+            forcarAbertura(tela);
+
+            var caixa = tela.querySelector('.conteudo-estudo') || tela.querySelector('div > div:last-child');
+            if (caixa) {
+                carregarConteudo(caixa, tema);
+            } else {
+                console.warn('[Estudos V5] Nenhum container de conteúdo encontrado dentro de #tela-' + tema + ' — verifique a estrutura HTML.');
+            }
+            return;
+        }
+
+        var btnVoltar = e.target.closest('.btn-voltar-estudo');
+        if (btnVoltar) {
+            var temaVoltar = btnVoltar.id.replace('voltar-', '');
+            var telaVoltar = document.getElementById('tela-' + temaVoltar);
+            if (telaVoltar) {
+                forcarFechamento(telaVoltar);
+                console.log('[Estudos V5] Tela fechada:', temaVoltar);
+            }
+        }
+    }, true);
+
+    console.log('[Estudos V5] Motor definitivo instalado (fase de captura ativa).');
+})();

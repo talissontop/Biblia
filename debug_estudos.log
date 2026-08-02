@@ -1,0 +1,4 @@
+﻿[2026-08-02 12:06:31] [INFO] === INICIANDO CONSERTO DAS TELAS DE ESTUDO ===
+[2026-08-02 12:06:31] [INFO] ✓ CSS das telas blindado com !important (imune a conflitos)
+[2026-08-02 12:06:31] [INFO] ✓ app.js reescrito com sucesso (Fallback e Eventos ativados)
+[2026-08-02 12:06:31] [INFO] === CONSERTO CONCLUÍDO ===

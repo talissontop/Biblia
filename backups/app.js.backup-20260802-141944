@@ -1,0 +1,137 @@
+// ==========================================
+// MOTOR DE ESTUDOS - DEFINITIVO V3
+// ==========================================
+(function() {
+    if (window.sistemaEstudosAtivo) return;
+    window.sistemaEstudosAtivo = true;
+
+    document.addEventListener('click', function(event) {
+        var card = event.target.closest('.card-estudo');
+        if (card) {
+            event.preventDefault();
+            var idCard = card.id; // ex: btn-angelologia
+            var tema = idCard.replace('btn-', '');
+            var tela = document.getElementById('tela-' + tema);
+            
+            console.log('[Estudos] Tentando abrir:', tema, tela);
+            
+            if (tela) {
+                tela.style.display = 'block';
+                tela.classList.add('tela-estudo-ativo');
+                document.body.style.overflow = 'hidden';
+                
+                var caixa = tela.querySelector('.conteudo-estudo') || tela.querySelector('div > div:last-child');
+                if (caixa && !caixa.getAttribute('data-carregado')) {
+                    caixa.innerHTML = '<div style="text-align:center; padding:40px; color:#d4af37;">⏳ Carregando manuscrito...</div>';
+                    
+                    fetch('estudos/' + tema + '.html')
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('Erro HTTP: ' + res.status);
+                            return res.text();
+                        })
+                        .then(function(htmlText) {
+                            caixa.innerHTML = htmlText;
+                            caixa.setAttribute('data-carregado', 'true');
+                            console.log('[Estudos] Sucesso ao carregar:', tema);
+                        })
+                        .catch(function(err) {
+                            console.warn('[Estudos] Erro no fetch:', err);
+                            caixa.innerHTML = '<div style="color:#ff6b6b; padding:20px;">Erro ao carregar o arquivo de estudo. Verifique se o arquivo /estudos/' + tema + '.html existe.</div>';
+                        });
+                }
+            } else {
+                console.error('[Estudos] ERRO: Tela não encontrada para ID: tela-' + tema);
+                alert('Aviso: Tela de estudo não encontrada.');
+            }
+        }
+        
+        var btnVoltar = event.target.closest('.btn-voltar-estudo');
+        if (btnVoltar) {
+            event.preventDefault();
+            var idVoltar = btnVoltar.id; // ex: voltar-angelologia
+            var temaVoltar = idVoltar.replace('voltar-', '');
+            var telaVoltar = document.getElementById('tela-' + temaVoltar);
+            
+            if (telaVoltar) {
+                telaVoltar.style.display = 'none';
+                telaVoltar.classList.remove('tela-estudo-ativo');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
+    console.log('[Estudos] Motor definitivo inicializado com sucesso.');
+})();
+
+// ==========================================
+// MOTOR DE ESTUDOS - BLINDAGEM TOTAL V4
+// ==========================================
+(function() {
+    if (window.motorEstudosBlindadoAtivo) return;
+    window.motorEstudosBlindadoAtivo = true;
+
+    document.addEventListener('click', function(e) {
+        var card = e.target.closest('.card-estudo');
+        if (card) {
+            e.preventDefault();
+            var tema = card.id.replace('btn-', '');
+            var tela = document.getElementById('tela-' + tema);
+
+            console.log('[Estudos] Clicou no card:', tema);
+
+            if (tela) {
+                tela.style.display = 'block';
+                tela.style.zIndex = '999999';
+                tela.classList.add('tela-estudo-ativo');
+                document.body.style.overflow = 'hidden';
+
+                var caixa = tela.querySelector('.conteudo-estudo') || tela.querySelector('div > div:last-child');
+                if (caixa) {
+                    caixa.innerHTML = '<div style="text-align:center; padding:40px; color:#d4af37;"><i>Carregando estudo de ' + tema + '...</i></div>';
+
+                    var caminho1 = 'estudos/' + tema + '.html';
+                    var caminho2 = './estudos/' + tema + '.html';
+
+                    fetch(caminho1)
+                        .then(function(res) {
+                            if (!res.ok) {
+                                return fetch(caminho2);
+                            }
+                            return res;
+                        })
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('Arquivo nao encontrado no servidor (HTTP ' + res.status + ').');
+                            return res.text();
+                        })
+                        .then(function(htmlText) {
+                            caixa.innerHTML = htmlText;
+                            console.log('[Estudos] Sucesso ao injetar:', tema);
+                        })
+                        .catch(function(err) {
+                            console.error('[Estudos] Erro ao carregar:', err);
+                            caixa.innerHTML = '<div style="background: rgba(255,107,107,0.1); border: 1px solid #ff6b6b; padding: 20px; border-radius: 8px; color: #ff6b6b;">' +
+                                '<h3>Falha ao carregar o estudo</h3>' +
+                                '<p><strong>Tema:</strong> ' + tema + '</p>' +
+                                '<p><strong>Detalhe:</strong> ' + err.message + '</p>' +
+                                '<p><em>Dica: Verifique se a pasta "estudos" foi enviada para o GitHub com o arquivo "' + tema + '.html" dentro.</em></p>' +
+                                '</div>';
+                        });
+                }
+            } else {
+                console.error('[Estudos] ERRO: Tela com ID "tela-' + tema + '" nao foi encontrada no HTML.');
+            }
+        }
+
+        var btnVoltar = e.target.closest('.btn-voltar-estudo');
+        if (btnVoltar) {
+            e.preventDefault();
+            var temaVoltar = btnVoltar.id.replace('voltar-', '');
+            var telaVoltar = document.getElementById('tela-' + temaVoltar);
+            if (telaVoltar) {
+                telaVoltar.style.display = 'none';
+                telaVoltar.classList.remove('tela-estudo-ativo');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
+    console.log('[Estudos] Motor blindado V4 carregado com sucesso.');
+})();

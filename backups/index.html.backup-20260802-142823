@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#05070a">
+    <meta name="description" content="Bíblia 3D - Ministério Pentecostal Elohim">
+    <title>Bíblia 3D - MPE</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./profile.css">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/jpeg" href="./img/logo_mpe.jpg">
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; height: 100%; }
+        body {
+            background-color: #05070a;
+            color: #e6edf3;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('./img/logo_mpe.jpg?v=1');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            opacity: 0.12;
+            z-index: -1;
+            pointer-events: none;
+        }
+        main { padding: 20px; text-align: center; position: relative; z-index: 1; }
+        
+        #tela-menu {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 70vh; gap: 20px;
+        }
+        .logo-menu-container { margin-bottom: 20px; animation: logoFadeIn 0.6s ease-out; }
+        @keyframes logoFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .logo-menu-container img {
+            width: 140px; height: 140px; object-fit: cover;
+            border-radius: 50%; border: 2px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .logo-menu-container img:hover { transform: scale(1.05); }
+        h2 {
+            color: #d4af37; border-bottom: 1px solid #30363d;
+            padding-bottom: 10px; margin: 15px 0; text-transform: uppercase;
+            letter-spacing: 1px; font-size: 1.8em;
+        }
+        .subtitulo-boas-vindas { color: #c9d1d9; font-size: 1.1em; margin: 20px 0 30px 0; font-weight: 500; }
+        .grid-botoes {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px; margin-bottom: 30px;
+        }
+        button {
+            background: linear-gradient(145deg, #1f242c, #161b22);
+            color: #d4af37; border: 1px solid #30363d; padding: 12px 8px;
+            border-radius: 8px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); transition: all 0.2s ease;
+            font-size: 0.95em; min-height: 48px; display: flex;
+            align-items: center; justify-content: center;
+        }
+        button:hover {
+            background: #d4af37; color: #0d1117;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3); transform: translateY(-2px);
+        }
+        button:active { transform: translateY(0); }
+        .btn-voltar { background: #21262d; color: #c9d1d9; width: 100%; max-width: 200px; margin: 0 auto 20px auto; display: block; }
+        .btn-voltar:hover { background: #30363d; color: #e6edf3; }
+        .view-hidden { display: none !important; }
+        
+        #leitor-panel {
+            background: rgba(22, 27, 34, 0.95); padding: 20px; border-radius: 10px;
+            border: 1px solid #30363d; max-height: 70vh; overflow-y: auto; text-align: left;
+        }
+        #leitor-panel::-webkit-scrollbar { width: 8px; }
+        #leitor-panel::-webkit-scrollbar-track { background: #161b22; }
+        #leitor-panel::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+        .versiculo-box { margin-bottom: 12px; font-size: 1.1em; line-height: 1.6; padding: 8px 0; }
+        .num { color: #d4af37; font-weight: bold; margin-right: 8px; font-size: 0.9em; min-width: 24px; display: inline-block; }
+        #botoes-navegacao-inferior { display: none; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        
+        @media (max-width: 768px) {
+            h2 { font-size: 1.4em; }
+            .logo-menu-container img { width: 100px; height: 100px; }
+            .grid-botoes { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            #leitor-panel { max-height: 60vh; font-size: 0.95em; }
+        }
+    </style>
+    <!-- ANIMACAO_CARDS_ESTUDOS_V2 -->
+    <style>
+        .card-estudo {
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease !important;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .card-estudo:active {
+            transform: scale(0.94) !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.8) !important; opacity: 0.9;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <style>
+        /* --- ESTILO DE EMERGÊNCIA (NÃO PODE SER SOBRESCRITO) --- */
+        .tela-estudo {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: #05070a !important;
+            z-index: 999999 !important;
+            padding: 20px !important;
+            overflow-y: auto !important;
+            box-sizing: border-box !important;
+            color: #e6edf3 !important;
+            font-family: 'Segoe UI', sans-serif !important;
+            transition: opacity 0.3s ease !important;
+        }
+        .tela-estudo-ativo {
+            display: block !important;
+        }
+        .btn-voltar-estudo {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: rgba(212, 175, 55, 0.2) !important;
+            border: none !important;
+            color: #d4af37 !important;
+            padding: 10px 20px !important;
+            cursor: pointer !important;
+            z-index: 1000000 !important;
+            border-radius: 6px !important;
+            font-weight: bold !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="profile-container"></div>
+
+    <main>
+        <!-- MENU PRINCIPAL -->
+        <div id="tela-menu">
+            <div class="logo-menu-container">
+                <img src="./img/logo_mpe.jpg?v=1" alt="Logo Ministério Pentecostal Elohim" loading="lazy">
+            </div>
+            <h2>Ministério Pentecostal Elohim</h2>
+            <p class="subtitulo-boas-vindas">Bem-vindo à Bíblia Sagrada</p>
+            <div class="grid-botoes" style="grid-template-columns: 1fr; max-width: 250px; margin: 0 auto;">
+                <button style="padding: 18px; font-size: 1.2em;" onclick="abrirBiblia()" aria-label="Abrir leitor de Bíblia">
+                    📖 Ler Bíblia
+                </button>
+            </div>
+        </div>
+
+        <!-- LIVROS -->
+        <div id="tela-livros" class="view-hidden">
+            <button class="btn-voltar" onclick="voltarParaMenu()" aria-label="Voltar ao menu principal">⬅ Voltar ao Menu</button>
+            <h2>Velho Testamento</h2>
+            <div id="grid-vt" class="grid-botoes"></div>
+            <h2>Novo Testamento</h2>
+            <div id="grid-nt" class="grid-botoes"></div>
+        </div>
+
+        <!-- CAPÍTULOS -->
+        <div id="tela-capitulos" class="view-hidden">
+            <button class="btn-voltar" onclick="mostrarTela('livros')" aria-label="Voltar à lista de livros">⬅ Voltar aos Livros</button>
+            <h2 id="titulo-livro-selecionado"></h2>
+            <div id="grid-capitulos-container" class="grid-botoes"></div>
+        </div>
+
+        <!-- LEITURA -->
+        <div id="tela-leitura" class="view-hidden">
+            <button id="btn-voltar-leitura" class="btn-voltar" aria-label="Voltar ao índice de capítulos">⬅ Voltar</button>
+            <h2 id="titulo-leitura"></h2>
+            <div id="leitor-panel">
+                <div id="texto-biblico"></div>
+            </div>
+            <div id="botoes-navegacao-inferior">
+                <button id="btn-prev" onclick="navegar(-1)" aria-label="Capítulo anterior">⬅ Anterior</button>
+                <button id="btn-next" onclick="navegar(1)" aria-label="Próximo capítulo">Próximo ➡</button>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDERS FUTUROS -->
+        <div id="tela-harpa" class="view-hidden"></div>
+        <div id="tela-atualizacoes" class="view-hidden"></div>
+        <div id="tela-perfil" class="view-hidden"></div>
+    
+    <!-- ========================================== -->
+    <!-- CARDS DE ESTUDOS TEMÁTICOS                -->
+    <!-- ========================================== -->
+    <div id="cards-estudos" style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; max-width: 280px; margin-left: auto; margin-right: auto;">
+        <!-- Card: ✨ Angelologia (Estudo dos Anjos) -->
+        <div id="btn-angelologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">✨ Angelologia (Estudo dos Anjos)</span>
+        </div>
+        <!-- Card: 🕯️ Escatologia (Estudo dos Últimos Tempos) -->
+        <div id="btn-escatologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🕯️ Escatologia (Estudo dos Últimos Tempos)</span>
+        </div>
+        <!-- Card: ⛪ Soteriologia (Estudo da Salvação) -->
+        <div id="btn-soteriologia" class="card-estudo" style="background: rgba(20,20,30,0.85); border: 1px solid #d4af37; padding: 14px 18px; border-radius: 12px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+            <span style="font-size: 0.95rem; color: #d4af37; font-weight: bold; font-family: system-ui; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">⛪ Soteriologia (Estudo da Salvação)</span>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TELAS DE CONTEÚDO DOS ESTUDOS            -->
+    <!-- ========================================== -->
+    <!-- Tela: angelologia -->
+    <div id="tela-angelologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-angelologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">✨ Angelologia (Estudo dos Anjos)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que são os Anjos?</strong> Os anjos são seres espirituais criados por Deus, dotados de inteligência, vontade e personalidade, cuja principal missão é adorar a Deus e servir como mensageiros e executores de Sua vontade na Terra.</p>
+<p><strong>Natureza:</strong> Eles são espíritos ministeriais (Hebreus 1:14). Não possuem corpos físicos como os humanos, mas podem assumir formas visíveis quando Deus permite.</p>
+<p><strong>Hierarquia e Atuação:</strong> A Bíblia menciona diferentes ordens e seres celestiais, como os Querubins, Serafins e Arcanjos (como Miguel e Gabriel), que protegem o povo de Deus e executam juízos divinos.</p>
+<p><strong>Principais Funções:</strong> Louvor a Deus, mensagens divinas, proteção dos crentes, execução de juízos e guerra espiritual contra as forças do mal.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Tela: escatologia -->
+    <div id="tela-escatologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-escatologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🕯️ Escatologia (Estudo dos Últimos Tempos)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que é Escatologia?</strong> Escatologia é o ramo da teologia que estuda os eventos finais e a consumação dos tempos conforme revelados na Bíblia.</p>
+<p><strong>Temas Principais:</strong> Segunda vinda de Cristo, Juízo Final, Reino de Deus, Ressurreição dos mortos e Nova Jerusalém.</p>
+<p><strong>Esperança Cristã:</strong> A Escatologia não é apenas sobre julgamento, mas principalmente sobre a esperança e vitória final de Cristo e Sua Igreja.</p>
+<p><strong>Relevância Prática:</strong> Compreender os últimos tempos nos encoraja a viver com santidade, vigilância e fé, esperando pelo retorno de Jesus.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Tela: soteriologia -->
+    <div id="tela-soteriologia" class="tela-estudo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; padding: 20px; overflow-y: auto; box-sizing: border-box; color: #e6edf3; font-family: system-ui;">
+        <div style="max-width: 700px; margin: 0 auto; padding-bottom: 40px;">
+            <button id="voltar-soteriologia" class="btn-voltar-estudo" style="background: #d4af37; color: #05070a; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);">← Voltar</button>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px; font-size: 1.6em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">⛪ Soteriologia (Estudo da Salvação)</h2>
+            <div style="line-height: 1.8; font-size: 1rem; color: #c9d1d9; background: rgba(22, 27, 34, 0.6); padding: 20px; border-radius: 8px; border-left: 3px solid #d4af37;">
+                <p><strong>O que é Soteriologia?</strong> Soteriologia é a doutrina que explica como a salvação é oferecida e realizada através de Jesus Cristo.</p>
+<p><strong>Fundamento:</strong> Todos pecaram e destituídos estão da glória de Deus (Romanos 3:23). A salvação é oferecida gratuitamente pela graça de Deus.</p>
+<p><strong>Processo da Salvação:</strong> Envolve arrependimento, fé em Cristo, justificação, regeneração e santificação contínua.</p>
+<p><strong>Segurança Eterna:</strong> Aquele que crê em Cristo recebe vida eterna e é selado pelo Espírito Santo, tendo certeza de sua salvação em Deus.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <!-- ARQUIVOS JS EXTERNOS (Têm que estar vazios por dentro) -->
+    <script src="./profile.js"></script>
+    <script src="./js/core/app.js"></script>
+
+    <!-- CONTROLES DA UI E BÍBLIA -->
+    <script>
+        window.abrirBiblia = function() {
+            try {
+                if (typeof mostrarTela === 'function') {
+                    mostrarTela('livros');
+                } else {
+                    document.getElementById('tela-menu').classList.add('view-hidden');
+                    document.getElementById('tela-livros').classList.remove('view-hidden');
+                }
+            } catch (err) {
+                console.error('[App] Erro ao abrir Bíblia:', err);
+            }
+        };
+
+        window.voltarParaMenu = function() {
+            try {
+                document.getElementById('tela-livros').classList.add('view-hidden');
+                document.getElementById('tela-menu').classList.remove('view-hidden');
+            } catch (err) {
+                console.error('[App] Erro ao voltar ao menu:', err);
+            }
+        };
+    </script>
+
+    <!-- SISTEMA PWA: INSTALAÇÃO E AUTO-ATUALIZAÇÃO -->
+    <script>
+        // 1. Banner de Instalação Automática
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            setTimeout(() => {
+                let banner = document.getElementById('pwa-install-banner');
+                if (!banner && !window.matchMedia('(display-mode: standalone)').matches) {
+                    banner = document.createElement('div');
+                    banner.id = 'pwa-install-banner';
+                    banner.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #161b22; color: #e6edf3; padding: 15px 25px; border-radius: 12px; border: 2px solid #d4af37; box-shadow: 0 5px 20px rgba(0,0,0,0.7); z-index: 999999; display: flex; align-items: center; gap: 15px; font-family: sans-serif;';
+                    banner.innerHTML = '<span style="font-size: 1.2em;">📖</span><div><div style="font-weight: bold; color: #d4af37;">Instalar Bíblia MPE</div><div style="font-size: 0.85em; color: #8b949e;">Adicione à tela inicial para acesso rápido.</div></div><button id="btn-instalar-app" style="background: #d4af37; color: #0d1117; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer;">Instalar</button><button onclick="this.parentElement.style.display=\'none\';" style="background: transparent; color: #8b949e; border: none; cursor: pointer; font-size: 1.2em;">&times;</button>';
+                    document.body.appendChild(banner);
+                    
+                    document.getElementById('btn-instalar-app').addEventListener('click', async () => {
+                        banner.style.display = 'none';
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        deferredPrompt = null;
+                    });
+                }
+            }, 3000);
+        });
+
+        // 2. Service Worker e Limpeza de Cache Extrema
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then(function(reg) {
+                    console.log('[SW] Registrado com sucesso, Escopo:', reg.scope);
+                    
+                    // Checa atualizações a cada 30 segundos
+                    setInterval(() => { try { reg.update(); } catch(e){} }, 30000);
+
+                    reg.addEventListener('updatefound', function() {
+                        var newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('[SW] Atualização encontrada. Limpando cache antigo...');
+                                caches.keys().then(function(cacheNames) {
+                                    return Promise.all(cacheNames.map(function(cacheName) {
+                                        return caches.delete(cacheName);
+                                    }));
+                                }).then(function() {
+                                    var notif = document.createElement('div');
+                                    notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;font-family:sans-serif;';
+                                    notif.innerHTML = '<strong>🔄 Atualização aplicada!</strong><br>O aplicativo foi atualizado para a versão mais recente.';
+                                    document.body.appendChild(notif);
+                                    setTimeout(() => { window.location.reload(true); }, 2000);
+                                });
+                            }
+                        });
+                    });
+                })
+                .catch(function(err) {
+                    console.warn('[SW] Erro ao registrar:', err);
+                });
+        }
+    </script>
+</body> 
+</html>
