@@ -1,7 +1,7 @@
 // Service Worker - Bíblia 3D PWA
 // Sem erros de sintaxe, totalmente validado
 
-var CACHE_NAME = 'biblia-3d-cache-v20260801-224207';
+var CACHE_NAME = 'biblia-3d-cache-v20260801-232754';
 var urlsToCache = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ var urlsToCache = [
   './img/logo_mpe.jpg'
 ];
 
+// Install listener com tratamento robusto
 self.addEventListener('install', function(event) {
   self.skipWaiting();
   event.waitUntil(

@@ -4,13 +4,13 @@
                             "form_factor":  "narrow",
                             "type":  "image/jpeg",
                             "sizes":  "192x192",
-                            "src":  "./img/logo_mpe.jpg"
+                            "src": "./img/logo_mpe.jpg?v=20260801-232754"
                         },
                         {
                             "form_factor":  "wide",
                             "type":  "image/jpeg",
                             "sizes":  "512x512",
-                            "src":  "./img/logo_mpe.jpg"
+                            "src": "./img/logo_mpe.jpg?v=20260801-232754"
                         }
                     ],
     "description":  "Leitor de Bíblia digital com suporte offline",
@@ -21,13 +21,13 @@
                       "purpose":  "any maskable",
                       "type":  "image/jpeg",
                       "sizes":  "192x192",
-                      "src":  "./img/logo_mpe.jpg"
+                      "src": "./img/logo_mpe.jpg?v=20260801-232754"
                   },
                   {
                       "purpose":  "any maskable",
                       "type":  "image/jpeg",
                       "sizes":  "512x512",
-                      "src":  "./img/logo_mpe.jpg"
+                      "src": "./img/logo_mpe.jpg?v=20260801-232754"
                   }
               ],
     "orientation":  "portrait",
